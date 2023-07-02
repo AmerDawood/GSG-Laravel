@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('announcements', function (Blueprint $table) {
             $table->id();
-            $table->integer('course_id');
-            $table->string('title');
+            $table->integer('class_id');
+            $table->string('title')->unique();
             $table->text('content');
+            $table->string('image_path')->nullable();
+            $table->enum('theme',['white','black'])->default('white');
+            $table->foreign('course_id')->references('id')->on('classes')->onDelete('cascade');
             $table->timestamps();
-            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
+
         });
     }
 

@@ -19,6 +19,36 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+
+            /*
+ course
+
+                 $table->id();
+            $table->integer('user_id');
+            $table->string('title');
+            $table->text('description');
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->timestamps();
+
+
+
+ course user
+
+
+         $table->id();
+            $table->integer('course_id');
+            $table->integer('user_id');
+            $table->timestamps();
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+
+
+
+
+            */
         });
     }
 
