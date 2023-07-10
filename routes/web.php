@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\ClassroomsController;
 use Illuminate\Support\Facades\Route;
 
 /*
+|
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
@@ -16,3 +18,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+
+Route::get('/classrooms',[ClassroomsController::class,'index']);
+Route::get('/classrooms/create',[ClassroomsController::class,'create']);
+
+Route::get('/classrooms/{name}/{age}',[ClassroomsController::class,'show'])->where('age','\d+');
+
+Route::get('classrooms/{id}',[ClassroomsController::class,'edit']);
