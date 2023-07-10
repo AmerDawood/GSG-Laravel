@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string("section",255)->nullable();
             $table->string("subject",255)->nullable();
             $table->string("room",255)->nullable();
+            $table->string('cover_image_path')->nullable();
             $table->string("theme")->nullable();
             $table->foreignId("user_id")->nullable()->constrained("users","id")->cascadeOnDelete();
             $table->enum("status",["active","archived"])->default("active");

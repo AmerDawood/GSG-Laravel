@@ -21,9 +21,17 @@ Route::get('/', function () {
 
 
 
-Route::get('/classrooms',[ClassroomsController::class,'index']);
+Route::get('/classrooms',[ClassroomsController::class,'index'])->name('classroom.index');
 Route::get('/classrooms/create',[ClassroomsController::class,'create']);
 
-Route::get('/classrooms/{name}/{age}',[ClassroomsController::class,'show'])->where('age','\d+');
+Route::post('/classroom/store',[ClassroomsController::class,'store'])->name('classromm.store');
 
-Route::get('classrooms/{id}',[ClassroomsController::class,'edit']);
+
+Route::get('classrooms/{id}/edit',[ClassroomsController::class,'edit'])->name('edit.classroom');
+Route::put('classrooms/{id}/update',[ClassroomsController::class,'update'])->name('update.classroom');
+
+
+
+Route::get('/classrooms/{id}',[ClassroomsController::class,'show'])->name('show.classroom');
+
+Route::delete('classrooms/{id}/delete',[ClassroomsController::class,'destroy'])->name('destroy.classroom');
