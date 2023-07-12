@@ -1,14 +1,17 @@
-<!doctype html>
-<html lang="en">
-    @include('layouts.head')
-
-  <body>
 
 
-    <div class="container">
 
-       @include('layouts.header')
-       <h1>Create Classroom</h1>
+
+
+@extends('master')
+
+
+
+@section('content')
+
+
+
+<h1>Create Classroom</h1>
 
         <form action="{{ route('topics.store') }}" method="POST">
             @csrf
@@ -34,9 +37,6 @@
           </form>
 
     </div>
-    {{-- @include('layouts.footer') --}}
 
-    @include('layouts.scripts')
 
-  </body>
-</html>
+@endsection

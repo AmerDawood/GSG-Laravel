@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Classroom;
 use App\Models\Topic;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session as FacadesSession;
 
 class TopicsController extends Controller
 {
@@ -42,7 +44,8 @@ class TopicsController extends Controller
 
         //PRG
 
-        return redirect()->route('topics.index')->with('msg','Topic Created Successfully');
+        return redirect()->route('topics.index')->with('success','Topic Created Successfully');
+
     }
 
     /**
