@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClassroomsController;
+use App\Http\Controllers\TopicsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,6 +20,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+
+Route::resource('topics',TopicsController::class);
 
 
 Route::get('/classrooms',[ClassroomsController::class,'index'])->name('classroom.index');
