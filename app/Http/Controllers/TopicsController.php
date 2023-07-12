@@ -42,7 +42,7 @@ class TopicsController extends Controller
 
         //PRG
 
-        return redirect()->route('topics.index');
+        return redirect()->route('topics.index')->with('msg','Topic Created Successfully');
     }
 
     /**
@@ -66,8 +66,11 @@ class TopicsController extends Controller
     {
         $topic = Topic::find($id);
 
+        $classroom = Classroom::all();
+
         return view('topics.edit',[
-         'topic'=>$topic
+         'topic'=>$topic,
+         'classroom'=>$classroom
         ]);
     }
 
@@ -99,6 +102,6 @@ class TopicsController extends Controller
         //     abort(404);
         // }
         $topic->delete();
-       return redirect()->route('topics.index');
+       return redirect()->route('topics.index')->with('msg','Topic Deleted Successfully');
     }
 }

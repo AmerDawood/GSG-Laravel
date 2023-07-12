@@ -1,18 +1,14 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-  </head>
+    @include('layouts.head')
+
   <body>
 
 
     <div class="container">
 
        @include('layouts.header')
-       <h1>Create Topic</h1>
+       <h1>Update Topic #{{ $topic->id }}</h1>
 
        <form action="{{ route('topics.update',$topic->id) }}" method="POST">
         @csrf
@@ -21,18 +17,30 @@
               <label for="exampleInputEmail1" class="form-label">Name</label>
               <input type="text" value="{{ $topic->name }}" name="name" class="form-control" id="name" aria-describedby="emailHelp">
             </div>
+
+
             <div class="mb-3">
+                <label for="time" class="form-label">Package Time</label>
+                <select class="form-select" id="time" name="classroom_id">
+                    @foreach ($classroom as $item)
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                    @endforeach
+
+                </select>
+            </div>
+            {{-- <div class="mb-3">
               <label for="exampleInputPassword1" class="form-label">Class Room</label>
               <input type="text" value="{{ $topic->classroom_id }}" name="classroom_id" class="form-control" id="section">
-            </div>
+            </div> --}}
 
 
             <button type="submit" class="btn btn-primary">Update</button>
           </form>
 
     </div>
-    @include('layouts.footer')
+    {{-- @include('layouts.footer') --}}
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    @include('layouts.scripts')
+
   </body>
 </html>
