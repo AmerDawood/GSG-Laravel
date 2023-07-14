@@ -9,9 +9,7 @@
 
 @section('content')
 
-
-
-<h1>Create Classroom</h1>
+<h1>Create Topic</h1>
 
         <form action="{{ route('topics.store') }}" method="POST">
             @csrf
