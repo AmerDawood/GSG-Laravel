@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ClassroomRequest;
 use App\Models\Classroom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -19,7 +20,10 @@ class ClassroomsController extends Controller
 
 
      public function create(){
-        return view('classrooms.create');
+
+        return view('classrooms.create',[
+            'classroom'=>new Classroom(),
+        ]);
 
      }
 
@@ -45,9 +49,21 @@ class ClassroomsController extends Controller
        ]);
      }
 
-     public function update(Request $request, $id)
+     public function update(ClassroomRequest $request, $id)
      {
          $classroom = Classroom::find($id);
+
+
+
+
+
+        // $request->validate([
+        //     'name' => 'required',
+        //     'section' => 'required',
+        //     'subject' => 'required',
+        //     'room' => 'required',
+        //     // 'cover_image' => 'required',
+        // ]);
 
          if ($request->hasFile('cover_image')) {
              if ($classroom->cover_image_path) {
@@ -74,7 +90,31 @@ class ClassroomsController extends Controller
 
 
 
-     public function store(Request $request){
+     public function store(ClassroomRequest $request){
+
+
+        // the data in ClassroomRequest validated
+        // $validated = $request->validated();
+        // $messages = [
+        //     'name.required'=>'The name is requierd bro :)'
+        // ];
+
+
+        // $rules =[
+        //     'name' => 'required|string|max:255',
+        //     'section' => 'required|string|max:255',
+        //     'subject' => 'required|string|max:255',
+        //     'room' => 'required|string|max:255',
+        //     // 'cover_image' => 'image|dimensions:width=200,height=100',
+        //     'cover_image' => 'required|image',
+        // ];
+
+
+
+        // $request->validate($rules,$messages);
+
+
+
 
 
        if($request->hasFile('cover_image')){
@@ -113,10 +153,5 @@ class ClassroomsController extends Controller
 
          return redirect()->route('classroom.index')->with('success','Classroom Deleted Successfully');;
      }
-
-
-
-
-
 
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TopicRequest;
 use App\Models\Classroom;
 use App\Models\Topic;
 use Illuminate\Contracts\Session\Session;
@@ -26,28 +27,23 @@ class TopicsController extends Controller
     public function create()
     {
         $classroom = Classroom::all();
-        return view('topics.create',compact('classroom'));
+        return view('topics.create',compact('classroom'),[
+            'topic'=>new Topic(),
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(TopicRequest $request)
     {
-        $topic = new Topic();
-
-        $topic->name = $request->post('name');
-        $topic->classroom_id = $request->post('classroom_id');
-
-
-        $topic->save(); // SAVE
+         Topic::create($request->all());
 
         //PRG
 
         return redirect()->route('topics.index')->with('success','Topic Created Successfully');
 
     }
-
     /**
      * Display the specified resource.
      */
@@ -80,7 +76,7 @@ class TopicsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(TopicRequest $request, string $id)
     {
         $topic = Topic::find($id);
 

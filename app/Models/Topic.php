@@ -14,6 +14,9 @@ class Topic extends Model
     protected $table ='topics';
 
 
+    protected $fillable =['name','classroom_id'];
+
+
     // protected $priimaryKey ='id';
     // protected $keyType ='int';
 
