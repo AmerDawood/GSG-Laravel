@@ -37,13 +37,12 @@ class ClassroomRequest extends FormRequest
                 $this->method()==="PUT"?'nullable':'required',
 
                 // 'max:1024'  this line for files
-                Rule::dimensions([
-                    'min_width'=>600,
-                    'min_height'=>200,
-                ]),
+                // Rule::dimensions([
+                //     'min_width'=>600,
+                //     'min_height'=>200,
+                // ]),
 
-                // Rule::imageFile(),
-
+                Rule::imageFile(),
 
             ],
         ];

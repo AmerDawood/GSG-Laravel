@@ -86,7 +86,8 @@ class TopicsController extends Controller
 
         $topic->save(); // UPDATE
 
-        return redirect()->route('topics.index');
+
+        return redirect()->route('topics.index')->with('error','Topic Updated Successfully');
     }
 
     /**

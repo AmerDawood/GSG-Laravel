@@ -10,12 +10,17 @@
   <h1>All Topics</h1>
 
 
-   @if(session()->has('success'))
-   <div class="alert alert-success" role="alert">
+   {{-- @if(session()->has('success')) --}}
+   {{-- <div class="alert alert-success" role="alert">
        {{ session('success') }}
      </div>
 
-   @endif
+   @endif --}}
+
+
+   <x-alert  name='success'></x-alert>
+   <x-alert  name='error'></x-alert>
+
 
   <div class="row">
 

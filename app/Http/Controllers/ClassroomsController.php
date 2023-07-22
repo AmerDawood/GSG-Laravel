@@ -145,13 +145,13 @@ class ClassroomsController extends Controller
      {
          $classroom = Classroom::findOrFail($id);
 
-         if ($classroom->cover_image_path) {
+         if ($classroom->path) {
              Storage::disk('public')->delete($classroom->cover_image_path);
          }
 
          $classroom->delete();
 
-         return redirect()->route('classroom.index')->with('success','Classroom Deleted Successfully');;
+         return redirect()->route('classroom.index')->with('success','Classroom Deleted Successfully');
      }
 
 }

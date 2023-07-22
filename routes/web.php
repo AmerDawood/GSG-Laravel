@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\ClassroomsController;
-use App\Http\Controllers\TopicsController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\ClassroomsController;
+use App\Http\Controllers\TopicsController;
+
 /*
-|
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
@@ -20,9 +21,24 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
 
 
-Route::resource('topics',TopicsController::class);
+
+
+
+
+Route::resource('topics',TopicsController::class)->middleware('auth');
 
 
 Route::get('/classrooms',[ClassroomsController::class,'index'])->name('classroom.index');
@@ -39,3 +55,6 @@ Route::put('classrooms/{id}/update',[ClassroomsController::class,'update'])->nam
 Route::get('/classrooms/{id}',[ClassroomsController::class,'show'])->name('show.classroom');
 
 Route::delete('classrooms/{id}/delete',[ClassroomsController::class,'destroy'])->name('destroy.classroom');
+
+
+

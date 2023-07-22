@@ -9,11 +9,13 @@
 @section('content')
 <h1>All Classrooms</h1>
 
+
+
 <div class="row">
  @foreach ($classrooms as $classroom)
  <div class="card" style="width: 18rem; margin: 10px;">
      {{-- <img src="uploads/{{ $classroom->cover_image_path }}" class="card-img-top" alt="...">   when image in uploads --}}
-     <img src="storage/{{ $classroom->cover_image_path }}" style="height: 200px" class="card-img-top" alt="...">
+     <img src="{{ Storage::url($classroom->cover_image_path) }}" style="height: 200px" class="card-img-top" alt="...">
 
      <div class="card-body">
          <h5 class="card-title">{{ $classroom->name }}</h5>
