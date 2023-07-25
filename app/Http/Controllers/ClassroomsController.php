@@ -4,54 +4,77 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ClassroomRequest;
 use App\Models\Classroom;
+use App\Models\Scopes\UserClassroomScope;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ClassroomsController extends Controller
 {
-     public function index(){
+
+    public function index()
+    {
 
 
-        $classrooms =Classroom::orderBy('created_at','desc')->get();
-
-        return view('classrooms.index',compact('classrooms'));
-     }
+        // $classrooms = Classroom::orderBy('created_at', 'desc')->dd();
 
 
-     public function create(){
+        // when you need to get local scope get only the name without scope in start
+        $classrooms = Classroom::
+        // active()
+        // ->resent()
+        // ->status('active')
+        // where('user_id',Auth::id())
+        orderBy('created_at', 'desc')
+        // ->withoutGlobalScopes() // stop all global scopes  also soft delete
+        ->withoutGlobalScope(UserClassroomScope::class)
 
-        return view('classrooms.create',[
-            'classroom'=>new Classroom(),
+        ->get();
+
+
+
+        // The Query Builder not work automaticlly with soft delete  like this :
+        // $classrooms = DB('classroom')->orderBy('created_at','desc')->dd();   this code doss not  work with query       builder with the soft delete , you must add the where deleted_at == null
+
+        return view('classrooms.index', compact('classrooms'));
+    }
+
+
+    public function create()
+    {
+
+        return view('classrooms.create', [
+            'classroom' => new Classroom(),
         ]);
+    }
 
-     }
-
-     public function show($id){
+    public function show($id)
+    {
 
         // $request->url();
 
         $classroom = Classroom::find($id);
 
-        return view('classrooms.show',[
-            'classroom'=>$classroom,
+        return view('classrooms.show', [
+            'classroom' => $classroom,
 
         ]);
+    }
 
-     }
 
-
-     public function edit($id){
+    public function edit($id)
+    {
         $classroom = Classroom::find($id);
 
-       return view('classrooms.edit',[
-        'classroom'=>$classroom
-       ]);
-     }
+        return view('classrooms.edit', [
+            'classroom' => $classroom
+        ]);
+    }
 
-     public function update(ClassroomRequest $request, $id)
-     {
-         $classroom = Classroom::find($id);
+    public function update(ClassroomRequest $request, $id)
+    {
+        $classroom = Classroom::find($id);
 
 
 
@@ -65,32 +88,33 @@ class ClassroomsController extends Controller
         //     // 'cover_image' => 'required',
         // ]);
 
-         if ($request->hasFile('cover_image')) {
-             if ($classroom->cover_image_path) {
-                 Storage::disk('public')->delete($classroom->cover_image_path);
-             }
+        if ($request->hasFile('cover_image')) {
+            if ($classroom->cover_image_path) {
+                Storage::disk('public')->delete($classroom->cover_image_path);
+            }
 
-             $file = $request->file('cover_image');
-             $path = $file->store('/covers', 'public');
-             $request->merge([
-                'cover_image_path'=>$path
-             ]);
-         } else {
-             $path = $classroom->cover_image_path;
-         }
+            $file = $request->file('cover_image');
+            $path = $file->store('/covers', 'public');
+            $request->merge([
+                'cover_image_path' => $path
+            ]);
+        } else {
+            $path = $classroom->cover_image_path;
+        }
 
-         $classroom->update($request->all());
+        $classroom->update($request->all());
 
-         return redirect()->route('classroom.index')->with('success','Classroom Updated Successfully');;
-     }
-
-
+        return redirect()->route('classroom.index')->with('success', 'Classroom Updated Successfully');;
+    }
 
 
 
 
 
-     public function store(ClassroomRequest $request){
+
+
+    public function store(ClassroomRequest $request)
+    {
 
 
         // the data in ClassroomRequest validated
@@ -117,41 +141,80 @@ class ClassroomsController extends Controller
 
 
 
-       if($request->hasFile('cover_image')){
-        $file = $request->file('cover_image');
-       $path = $file->store('/covers','public');
-       $request->merge([
-          'cover_image_path'=>$path
-       ]);
-       }
+        if ($request->hasFile('cover_image')) {
+            $file = $request->file('cover_image');
+            $path = $file->store('/covers', 'public');
+            $request->merge([
+                'cover_image_path' => $path
+            ]);
+        }
 
-       $request->merge([
-         'code'=>Str::random(10)
-       ]);
+        $request->merge([
+            'code' => Str::random(10)
+        ]);
+        $request->merge([
+            'user_id' =>Auth::id(),
+        ]);
 
-       Classroom::create($request->all());
+        Classroom::create($request->all());
 
-    //    $classroom->save(); // SAVE
+        //    $classroom->save(); // SAVE
 
-       //PRG
+        //PRG
 
-       return redirect()->route('classroom.index')->with('success','Classroom Created Successfully');;
-
-     }
-
+        return redirect()->route('classroom.index')->with('success', 'Classroom Created Successfully');;
+    }
 
 
-     public function destroy($id)
-     {
-         $classroom = Classroom::findOrFail($id);
 
-         if ($classroom->path) {
-             Storage::disk('public')->delete($classroom->cover_image_path);
-         }
+    public function destroy($id)
+    {
+        $classroom = Classroom::findOrFail($id);
 
-         $classroom->delete();
+        //  if ($classroom->path) {
+        //      Storage::disk('public')->delete($classroom->cover_image_path);
+        //  }
 
-         return redirect()->route('classroom.index')->with('success','Classroom Deleted Successfully');
-     }
+        $classroom->delete();
 
+        return redirect()->route('classroom.index')->with('success', 'Classroom Deleted Successfully');
+    }
+
+
+
+
+    public function trashed()
+    {
+        $classrooms = Classroom::onlyTrashed()->latest()->get();
+
+
+        return view('classrooms.trashed', compact('classrooms'));
+    }
+
+    public function restore($id)
+    {
+
+        $classroom = Classroom::onlyTrashed()->findOrFail($id);
+
+
+        $classroom->restore();
+        return redirect()->route('classroom.trashed')->with('success', 'Classroom # ({$classroom->name}) Restored Successfully');
+    }
+
+
+
+    public function  forceDelete($id)
+    {
+
+        $classroom = Classroom::withTrashed()->findOrFail($id);
+
+        $classroom->forceDelete();
+        if ($classroom->path) {
+            Storage::disk('public')->delete($classroom->cover_image_path);
+        }
+
+        return redirect()->route('classroom.trashed')->with('success', 'Classroom # ({$classroom->name}) Force Delete Successfully');
+
+
+    }
 }

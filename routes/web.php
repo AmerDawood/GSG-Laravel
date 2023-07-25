@@ -16,6 +16,43 @@ use App\Http\Controllers\TopicsController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::middleware(['auth'])->group(function(){
+
+    Route::get('/topics/trashed',[TopicsController::class,'trashed'])->name('topic.trashed');
+
+    Route::put('/topics/trashed/{topic}',[TopicsController::class,'restore'])->name('topic.restore');
+
+    Route::delete('/topics/trashed/{topic}',[TopicsController::class,'forceDelete'])->name('topic.force-delete');
+
+
+    Route::resource('topics',TopicsController::class)->middleware('auth');
+
+
+
+Route::get('/classroom/trashed',[ClassroomsController::class,'trashed'])->name('classroom.trashed');
+
+Route::put('/classroom/trashed/{classroom}',[ClassroomsController::class,'restore'])->name('classroom.restore');
+
+Route::delete('/classroom/trashed/{classroom}',[ClassroomsController::class,'forceDelete'])->name('classroom.force-delete');
+
+
+
+
+
+Route::get('/classrooms',[ClassroomsController::class,'index'])->name('classroom.index');
+Route::get('/classrooms/create',[ClassroomsController::class,'create']);
+
+Route::post('/classroom/store',[ClassroomsController::class,'store'])->name('classromm.store');
+Route::get('classrooms/{id}/edit',[ClassroomsController::class,'edit'])->name('edit.classroom');
+Route::put('classrooms/{id}/update',[ClassroomsController::class,'update'])->name('update.classroom');
+Route::get('/classrooms/show/{id}',[ClassroomsController::class,'show'])->name('show.classroom');
+Route::delete('classrooms/{id}/delete',[ClassroomsController::class,'destroy'])->name('destroy.classroom');
+
+
+
+
+
+});
 
 Route::get('/', function () {
     return view('welcome');
@@ -33,28 +70,6 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-
-
-
-
-
-Route::resource('topics',TopicsController::class)->middleware('auth');
-
-
-Route::get('/classrooms',[ClassroomsController::class,'index'])->name('classroom.index');
-Route::get('/classrooms/create',[ClassroomsController::class,'create']);
-
-Route::post('/classroom/store',[ClassroomsController::class,'store'])->name('classromm.store');
-
-
-Route::get('classrooms/{id}/edit',[ClassroomsController::class,'edit'])->name('edit.classroom');
-Route::put('classrooms/{id}/update',[ClassroomsController::class,'update'])->name('update.classroom');
-
-
-
-Route::get('/classrooms/{id}',[ClassroomsController::class,'show'])->name('show.classroom');
-
-Route::delete('classrooms/{id}/delete',[ClassroomsController::class,'destroy'])->name('destroy.classroom');
 
 
 

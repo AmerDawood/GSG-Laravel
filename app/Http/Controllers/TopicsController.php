@@ -104,4 +104,40 @@ class TopicsController extends Controller
         $topic->delete();
        return redirect()->route('topics.index')->with('msg','Topic Deleted Successfully');
     }
+
+
+
+
+    public function trashed()
+    {
+        $topics = Topic::onlyTrashed()->latest()->get();
+
+
+        return view('topics.trashed', compact('topics'));
+    }
+
+    public function restore($id)
+    {
+
+        $topic = Topic::onlyTrashed()->findOrFail($id);
+
+
+        $topic->restore();
+
+        return redirect()->route('topic.trashed')->with('success', 'Topic  Restored Successfully');
+    }
+
+
+
+    public function  forceDelete($id)
+    {
+
+        $topic = Topic::withTrashed()->findOrFail($id);
+
+        $topic->forceDelete();
+
+
+        return redirect()->route('topic.trashed')->with('success', 'Topic Force Delete Successfully');
+
+    }
 }
