@@ -49,7 +49,7 @@ Route::get('/classrooms/show/{id}',[ClassroomsController::class,'show'])->name('
 Route::delete('classrooms/{id}/delete',[ClassroomsController::class,'destroy'])->name('destroy.classroom');
 
 
-
+Route::get('/classrooms/{classroom}/topics',[TopicsController::class,'classroomTopics'])->name('show.topics.classroom');
 
 
 });

@@ -39,6 +39,12 @@ class Topic extends Model
 
 
 
+    public function scopeClassroomId(Builder $query , $classroomId)
+    {
+
+        $query->where('classroom_id','=',$classroomId);
+
+    }
 
 
 

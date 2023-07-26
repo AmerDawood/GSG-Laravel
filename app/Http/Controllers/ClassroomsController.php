@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ClassroomRequest;
 use App\Models\Classroom;
 use App\Models\Scopes\UserClassroomScope;
+use App\Models\Topic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -61,6 +62,13 @@ class ClassroomsController extends Controller
 
         ]);
     }
+
+
+
+
+ 
+
+
 
 
     public function edit($id)

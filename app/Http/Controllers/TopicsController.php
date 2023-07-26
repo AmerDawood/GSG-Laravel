@@ -140,4 +140,18 @@ class TopicsController extends Controller
         return redirect()->route('topic.trashed')->with('success', 'Topic Force Delete Successfully');
 
     }
+
+
+
+    public function classroomTopics($classroomId)
+    {
+        $topics = Topic::ClassroomId($classroomId)->get();
+
+        return view('topics.classrooms', compact('topics'));
+
+    }
+
+
+
+
 }
