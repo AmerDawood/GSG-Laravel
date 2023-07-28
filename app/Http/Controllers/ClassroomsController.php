@@ -6,9 +6,12 @@ use App\Http\Requests\ClassroomRequest;
 use App\Models\Classroom;
 use App\Models\Scopes\UserClassroomScope;
 use App\Models\Topic;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
 class ClassroomsController extends Controller
@@ -26,7 +29,7 @@ class ClassroomsController extends Controller
         // active()
         // ->resent()
         // ->status('active')
-        // where('user_id',Auth::id())
+        where('user_id',Auth::id())->
         orderBy('created_at', 'desc')
         // ->withoutGlobalScopes() // stop all global scopes  also soft delete
         ->withoutGlobalScope(UserClassroomScope::class)
@@ -57,8 +60,14 @@ class ClassroomsController extends Controller
 
         $classroom = Classroom::find($id);
 
-        return view('classrooms.show', [
+        $invetation_link = URL::signedRoute('classroom.join',[
+            'classroom'=>$classroom->id,
+            'code' => $classroom->code,
+        ]);
+
+        return view('classrooms.show')->with([
             'classroom' => $classroom,
+            'invetation_link'=> $invetation_link,
 
         ]);
     }
@@ -66,7 +75,7 @@ class ClassroomsController extends Controller
 
 
 
- 
+
 
 
 
@@ -164,9 +173,41 @@ class ClassroomsController extends Controller
             'user_id' =>Auth::id(),
         ]);
 
-        Classroom::create($request->all());
 
-        //    $classroom->save(); // SAVE
+        DB::beginTransaction();
+
+
+
+        // DB::transaction(function(){});  another way to use the transaction
+
+
+        try{
+            $classroom=   Classroom::create($request->all());
+
+
+
+        // DB::table('classroom_user')->insert([
+        //     'classroom_id' => $classroom->id,
+        //     'user_id' => Auth::id(),
+        //     'role' => $request->input('role', 'student'),
+        //     'created_at' => now()->format('Y-m-d H:i:s')
+        // ]);
+
+
+        $classroom->join(Auth::id(), 'teacher');
+
+        DB::commit();
+
+        }catch(Exception $e){
+
+            DB::rollBack();
+
+
+            return back()->with('error',$e->getMessage())->withInput();
+
+        }
+
+
 
         //PRG
 

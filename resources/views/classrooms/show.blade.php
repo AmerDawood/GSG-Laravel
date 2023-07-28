@@ -12,6 +12,9 @@
  <h1>Classroom Name is :  {{ $classroom->name }} </h1>
  <h1>Classroom Code is :  {{ $classroom->code }} </h1>
 
+
+
+ <p>Invetaion Link : <a href="{{$invetation_link }}"> {{ $invetation_link }}</a></p>
 </div>
 
 

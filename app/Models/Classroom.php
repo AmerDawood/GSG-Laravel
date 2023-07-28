@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Classroom extends Model
 {
@@ -37,11 +38,11 @@ class Classroom extends Model
      }
 
     // local scope
-    // public function scopeActive(Builder $query){
+    public function scopeActive(Builder $query){
 
-    //     $query->where('status','=','active');
+        $query->where('status','=','active');
 
-    //   }
+      }
 
 
     //   public function scopeResent(Builder $query){
@@ -63,6 +64,17 @@ class Classroom extends Model
 
 
 
+
+
+    public function join($user_id , $role ='student'){
+
+        DB::table('classroom_user')->insert([
+            'classroom_id' => $this->id,
+            'user_id' => $user_id,
+            'role' => $role,
+            'created_at' => now()->format('Y-m-d H:i:s')
+        ]);
+    }
 
 
 }

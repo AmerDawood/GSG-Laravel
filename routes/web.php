@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\ClassroomsController;
+use App\Http\Controllers\JoinClassroomController;
 use App\Http\Controllers\TopicsController;
 
 /*
@@ -52,6 +52,18 @@ Route::delete('classrooms/{id}/delete',[ClassroomsController::class,'destroy'])-
 Route::get('/classrooms/{classroom}/topics',[TopicsController::class,'classroomTopics'])->name('show.topics.classroom');
 
 
+Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+
+
+Route::get('classroom/{classroom}/join',[JoinClassroomController::class,'create'])
+->middleware('signed')
+->name('classroom.join');
+Route::post('classroom/{classroom}/join',[JoinClassroomController::class,'store'])->name('classroom..join.store');
+
+
 });
 
 Route::get('/', function () {
@@ -62,11 +74,9 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+
+
+
 
 require __DIR__.'/auth.php';
 
