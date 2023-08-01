@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClassroomsController;
+use App\Http\Controllers\ClassWorkController;
 use App\Http\Controllers\JoinClassroomController;
 use App\Http\Controllers\TopicsController;
 
@@ -39,14 +40,22 @@ Route::delete('/classroom/trashed/{classroom}',[ClassroomsController::class,'for
 
 
 
-Route::get('/classrooms',[ClassroomsController::class,'index'])->name('classroom.index');
-Route::get('/classrooms/create',[ClassroomsController::class,'create']);
+// Route::get('/classrooms',[ClassroomsController::class,'index'])->name('classroom.index');
+// Route::get('/classrooms/create',[ClassroomsController::class,'create']);
+// Route::post('/classroom/store',[ClassroomsController::class,'store'])->name('classromm.store');
+// Route::get('classrooms/{id}/edit',[ClassroomsController::class,'edit'])->name('edit.classroom');
+// Route::put('classrooms/{id}/update',[ClassroomsController::class,'update'])->name('update.classroom');
+// Route::get('/classrooms/show/{id}',[ClassroomsController::class,'show'])->name('show.classroom');
+// Route::delete('classrooms/{id}/delete',[ClassroomsController::class,'destroy'])->name('destroy.classroom');
 
-Route::post('/classroom/store',[ClassroomsController::class,'store'])->name('classromm.store');
-Route::get('classrooms/{id}/edit',[ClassroomsController::class,'edit'])->name('edit.classroom');
-Route::put('classrooms/{id}/update',[ClassroomsController::class,'update'])->name('update.classroom');
-Route::get('/classrooms/show/{id}',[ClassroomsController::class,'show'])->name('show.classroom');
-Route::delete('classrooms/{id}/delete',[ClassroomsController::class,'destroy'])->name('destroy.classroom');
+
+Route::resource('classrooms',ClassroomsController::class);
+
+
+
+// Route::resource('classrooms.classworks',ClassWorkController::class)->shallow();
+Route::resource('classrooms.classworks',ClassWorkController::class);
+
 
 
 Route::get('/classrooms/{classroom}/topics',[TopicsController::class,'classroomTopics'])->name('show.topics.classroom');

@@ -16,18 +16,21 @@
  <div class="card" style="width: 18rem; margin: 10px;">
      {{-- <img src="uploads/{{ $classroom->cover_image_path }}" class="card-img-top" alt="...">   when image in uploads --}}
      <img src="{{ Storage::url($classroom->cover_image_path) }}" style="height:100px" class="card-img-top" alt="...">
+     {{-- <img src="{{ $classroom->cover_image_path}}" style="height:100px" class="card-img-top" alt="..."> --}}
+
+
 
      <div class="card-body">
          <h5 class="card-title">{{ $classroom->name }}</h5>
          <p class="card-text">{{ $classroom->section }}</p>
-       
-         <a class="btn btn-sm btn-primary" href="{{ route('edit.classroom', ['id' => $classroom->id]) }}"><i class="fas fa-edit"></i></a>
-         <a class="btn btn-sm btn-success" href="{{ route('show.classroom', ['id' => $classroom->id]) }}"><i class="fas fa-eye"></i></a>
+
+         <a class="btn btn-sm btn-primary" href="{{ route('classrooms.edit',$classroom->id) }}"><i class="fas fa-edit"></i></a>
+         <a class="btn btn-sm btn-success" href="{{ route('classrooms.show',$classroom->id) }}"><i class="fas fa-eye"></i></a>
 
 
 
          <button class="btn btn-sm btn-danger btn-delete"><i class="fas fa-trash"></i></button>
-    <form class="d-inline" action="{{ route('destroy.classroom', ['id' => $classroom->id]) }}" method="post">
+    <form class="d-inline" action="{{ route('classrooms.destroy',$classroom->id) }}" method="post">
         @csrf
           @method('delete')
             </form>

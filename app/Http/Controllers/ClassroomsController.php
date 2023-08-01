@@ -121,7 +121,7 @@ class ClassroomsController extends Controller
 
         $classroom->update($request->all());
 
-        return redirect()->route('classroom.index')->with('success', 'Classroom Updated Successfully');;
+        return redirect()->route('classrooms.index')->with('success', 'Classroom Updated Successfully');;
     }
 
 
@@ -166,12 +166,12 @@ class ClassroomsController extends Controller
             ]);
         }
 
-        $request->merge([
-            'code' => Str::random(10)
-        ]);
-        $request->merge([
-            'user_id' =>Auth::id(),
-        ]);
+        // $request->merge([
+        //     'code' => Str::random(10)
+        // ]);
+        // $request->merge([
+        //     'user_id' =>Auth::id(),
+        // ]);
 
 
         DB::beginTransaction();
@@ -211,7 +211,7 @@ class ClassroomsController extends Controller
 
         //PRG
 
-        return redirect()->route('classroom.index')->with('success', 'Classroom Created Successfully');;
+        return redirect()->route('classrooms.index')->with('success', 'Classroom Created Successfully');;
     }
 
 
@@ -226,7 +226,7 @@ class ClassroomsController extends Controller
 
         $classroom->delete();
 
-        return redirect()->route('classroom.index')->with('success', 'Classroom Deleted Successfully');
+        return redirect()->route('classrooms.index')->with('success', 'Classroom Deleted Successfully');
     }
 
 
@@ -258,9 +258,15 @@ class ClassroomsController extends Controller
         $classroom = Classroom::withTrashed()->findOrFail($id);
 
         $classroom->forceDelete();
-        if ($classroom->path) {
-            Storage::disk('public')->delete($classroom->cover_image_path);
-        }
+        // if ($classroom->path) {
+        //     Storage::disk('public')->delete($classroom->cover_image_path);
+        // }
+
+        //  Classroom::deleteCoverImage($classroom->cover_image_path);
+
+
+
+
 
         return redirect()->route('classroom.trashed')->with('success', 'Classroom # ({$classroom->name}) Force Delete Successfully');
 

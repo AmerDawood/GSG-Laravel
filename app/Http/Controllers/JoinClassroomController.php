@@ -20,7 +20,7 @@ class JoinClassroomController extends Controller
 
             $this->exists($id, Auth::id());
         } catch (Exception $e) {
-            return redirect()->route('show.classroom', $id);
+            return redirect()->route('classrooms.show', $id);
         }
 
 

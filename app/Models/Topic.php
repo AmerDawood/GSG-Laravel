@@ -16,7 +16,7 @@ class Topic extends Model
     protected $table ='topics';
 
 
-    protected $fillable =['name','classroom_id'];
+    protected $fillable =['name','classroom_id','user_id'];
 
 
     // protected $priimaryKey ='id';
@@ -47,5 +47,11 @@ class Topic extends Model
     }
 
 
+
+
+    public function classworks()
+    {
+        return $this->hasMany(ClassWork::class,'topic_id','id');
+    }
 
 }

@@ -13,7 +13,7 @@
     <x-errors></x-errors>
 
 
-        <form action="{{ route('classromm.store') }}" method="POST" enctype="multipart/form-data" >
+        <form action="{{ route('classrooms.store') }}" method="POST" enctype="multipart/form-data" >
             @csrf
             @include('classrooms._form',['button_label'=>'Create Classroom'])
           </form>

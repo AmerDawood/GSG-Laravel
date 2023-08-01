@@ -3,12 +3,16 @@
 namespace App\Models;
 
 use App\Models\Scopes\UserClassroomScope;
+use App\Observers\ClassroomObserver;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Classroom extends Model
 {
@@ -34,7 +38,47 @@ class Classroom extends Model
         // });
 
 
+        static::observe(ClassroomObserver::class);
         static::addGlobalScope(new UserClassroomScope);
+
+
+/*
+
+
+        static::creating(function(Classroom $classroom){
+            $classroom->code = Str::random(8);
+            $classroom->user_id = Auth::id();
+
+        });
+
+
+       static::forceDeleted(function(Classroom $classroom){
+
+        static::deleteCoverImage($classroom->cover_image_path);
+
+       });
+
+       static::deleted(function(Classroom $classroom){
+
+         $classroom->status = 'deleted';
+
+
+         $classroom->save();
+
+       });
+
+
+       static::restored(function(Classroom $classroom){
+
+        $classroom->status = 'active';
+          // to change the status
+        $classroom->save();
+
+      });
+*/
+
+
+
      }
 
     // local scope
@@ -76,5 +120,75 @@ class Classroom extends Model
         ]);
     }
 
+
+
+    // Accessor for found Attribute
+    public function getNameAttribute($value)
+    {
+
+        return strtoupper($value);
+
+    }
+
+
+      public static function deleteCoverImage($path)
+      {
+
+        if($path && Storage::disk('public')->exists($path))
+        {
+            return Storage::disk('public')->delete($path);
+        }
+      }
+
+
+    // Accessor for found Attribute
+    //   public function getCoverImagePathAttribute($value)
+    //   {
+
+    //     if($value){
+    //         return Storage::disk("public")->url($value);
+    //     }
+    //     return 'https://placehold.co/800x300';
+
+    //   }
+
+
+    // Accessor for not found Attribute
+
+    // public function getCoverImageURLAttribute()
+    // {
+
+    //   if($this->cover_image_path){
+    //       return Storage::disk("public")->url($this->cover_image_path);
+    //   }
+    //   return 'https://placehold.co/800x300';
+
+    // }
+
+
+
+
+    public function getUrlAttribute(){
+        return route('show.classroom',$this->id);
+    }
+
+
+
+
+
+
+    // relationships
+
+
+    public function classworks() : HasMany
+    {
+        return $this->hasMany(ClassWork::class,'classroom_id','id');
+    }
+
+
+    public function topics() : HasMany
+    {
+        return $this->hasMany(Topic::class,'classroom_id','id');
+    }
 
 }

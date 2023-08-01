@@ -6,7 +6,7 @@
 @section('content')
 <h1>Update Classroom # {{ $classroom->id }}</h1>
 
-<form action="{{ route('update.classroom',$classroom->id) }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('classrooms.update',$classroom->id) }}" method="POST" enctype="multipart/form-data">
  @csrf
  @method('put')
    @include('classrooms._form',['button_label'=>'Update Classroom'])

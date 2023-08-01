@@ -14,6 +14,10 @@
 
 
 
+    <p> <a href="{{ route('classrooms.classworks.index',$classroom->id) }}" class="btn btn-outline-dark">Classworks  </a></p>
+
+
+
  <p>Invetaion Link : <a href="{{$invetation_link }}"> {{ $invetation_link }}</a></p>
 </div>
 
