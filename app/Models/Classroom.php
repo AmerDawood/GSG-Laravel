@@ -16,22 +16,22 @@ use Illuminate\Support\Str;
 
 class Classroom extends Model
 {
-    use HasFactory , SoftDeletes;
+    use HasFactory, SoftDeletes;
 
 
-    protected $fillable = ['name','code','subject','section','room','cover_image_path','user_id'];
-
-
-
-
-     // Global Scope
+    protected $fillable = ['name', 'code', 'subject', 'section', 'room', 'cover_image_path', 'user_id'];
 
 
 
-      // if i need to add boot  you must make this arent::boot();
 
-     protected static function booted()
-     {
+    // Global Scope
+
+
+
+    // if i need to add boot  you must make this arent::boot();
+
+    protected static function booted()
+    {
         // static::addGlobalScope('users',function(Builder $query){
 
         //     $query->where('user_id','=',Auth::id());
@@ -42,7 +42,7 @@ class Classroom extends Model
         static::addGlobalScope(new UserClassroomScope);
 
 
-/*
+        /*
 
 
         static::creating(function(Classroom $classroom){
@@ -76,17 +76,14 @@ class Classroom extends Model
 
       });
 */
-
-
-
-     }
+    }
 
     // local scope
-    public function scopeActive(Builder $query){
+    public function scopeActive(Builder $query)
+    {
 
-        $query->where('status','=','active');
-
-      }
+        $query->where('status', '=', 'active');
+    }
 
 
     //   public function scopeResent(Builder $query){
@@ -110,14 +107,21 @@ class Classroom extends Model
 
 
 
-    public function join($user_id , $role ='student'){
+    public function join($user_id, $role = 'student')
+    {
 
-        DB::table('classroom_user')->insert([
-            'classroom_id' => $this->id,
-            'user_id' => $user_id,
+
+        $this->usres()->attach($user_id,[
             'role' => $role,
             'created_at' => now()->format('Y-m-d H:i:s')
         ]);
+
+        // DB::table('classroom_user')->insert([
+        //     'classroom_id' => $this->id,
+        //     'user_id' => $user_id,
+        //     'role' => $role,
+        //     'created_at' => now()->format('Y-m-d H:i:s')
+        // ]);
     }
 
 
@@ -127,18 +131,16 @@ class Classroom extends Model
     {
 
         return strtoupper($value);
-
     }
 
 
-      public static function deleteCoverImage($path)
-      {
+    public static function deleteCoverImage($path)
+    {
 
-        if($path && Storage::disk('public')->exists($path))
-        {
+        if ($path && Storage::disk('public')->exists($path)) {
             return Storage::disk('public')->delete($path);
         }
-      }
+    }
 
 
     // Accessor for found Attribute
@@ -168,8 +170,9 @@ class Classroom extends Model
 
 
 
-    public function getUrlAttribute(){
-        return route('show.classroom',$this->id);
+    public function getUrlAttribute()
+    {
+        return route('show.classroom', $this->id);
     }
 
 
@@ -180,15 +183,43 @@ class Classroom extends Model
     // relationships
 
 
-    public function classworks() : HasMany
+    public function classworks(): HasMany
     {
-        return $this->hasMany(ClassWork::class,'classroom_id','id');
+        return $this->hasMany(ClassWork::class, 'classroom_id', 'id');
     }
 
 
-    public function topics() : HasMany
+    public function topics(): HasMany
     {
-        return $this->hasMany(Topic::class,'classroom_id','id');
+        return $this->hasMany(Topic::class, 'classroom_id', 'id');
     }
 
+
+
+
+    public function usres()
+    {
+        return $this->belongsToMany(
+            User::class, // Related Model
+            'classroom_user', // Pivot Table
+            'classroom_id',  // FK for current table in pivot model
+            'user_id',      // FK for current table in pivot model
+            'id',             // PK for current model
+            'id'             // PK for related model
+
+        )->withPivot(['role','created_at'])
+        ->as('join')  // to replase pivot name to (join)
+         ;
+        //->wherePivot('role' ,'teacher')
+    }
+
+
+
+    public function teachers(){
+        return $this->usres()->wherePivot('role','=','teacher');
+    }
+
+    public function students(){
+        return $this->usres()->wherePivot('role','=','students');
+    }
 }

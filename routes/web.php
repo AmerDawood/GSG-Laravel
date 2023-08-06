@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClassroomPeopleController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClassroomsController;
@@ -73,6 +74,9 @@ Route::get('classroom/{classroom}/join',[JoinClassroomController::class,'create'
 Route::post('classroom/{classroom}/join',[JoinClassroomController::class,'store'])->name('classroom..join.store');
 
 
+Route::get('classrooms/{classroom}/people',[ClassroomPeopleController::class,'index'])->name('classroom.people');
+
+Route::delete('classrooms/{classroom}/people',[ClassroomPeopleController::class,'destroy'])->name('classroom.people.destroy');
 });
 
 Route::get('/', function () {

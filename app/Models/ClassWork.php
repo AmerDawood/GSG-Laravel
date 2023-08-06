@@ -37,4 +37,17 @@ class ClassWork extends Model
     {
         return $this->belongsTo(Topic::class);
     }
+
+
+
+
+
+       // many to many
+
+
+
+       public function users()
+       {
+           return $this->belongsToMany(User::class)->withPivot('grade','submitted_at','status','status');
+       }
 }

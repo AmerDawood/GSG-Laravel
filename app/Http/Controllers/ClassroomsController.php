@@ -227,6 +227,7 @@ class ClassroomsController extends Controller
         $classroom->delete();
 
         return redirect()->route('classrooms.index')->with('success', 'Classroom Deleted Successfully');
+
     }
 
 

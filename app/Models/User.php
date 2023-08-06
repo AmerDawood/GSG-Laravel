@@ -65,4 +65,40 @@ class User extends Authenticatable
     }
 
 
+
+    // many to many
+
+    public function classrooms()
+    {
+        return $this->belongsToMany(
+            Classroom::class,    // Related Model
+            'classroom_user',    // Pivot Table
+            'user_id',           // FK for current table in pivot model
+            'classroom_id',      // FK for current table in pivot model
+            'id',                // PK for current model
+            'id'                 // PK for related model
+
+        )->withPivot(['role','created_at'])
+        ->as('join'); // to replase pivot name to (join)
+
+    }
+
+
+    public function createdClassrooms()
+    {
+      return $this->hasMany(Classroom::class);
+    }
+
+
+
+    public function classworks()
+    {
+        
+    }
+
+
+
+
+
+
 }

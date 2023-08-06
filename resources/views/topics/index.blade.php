@@ -9,6 +9,7 @@
 
   <h1>All Topics</h1>
 
+  <a href="{{ route('topics.create') }}"><button class="btn btn-primary">Create Topic</button></a>
 
    {{-- @if(session()->has('success')) --}}
    {{-- <div class="alert alert-success" role="alert">

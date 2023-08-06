@@ -145,8 +145,13 @@ class ClassWorkController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ClassWork $classWork ,Classroom $classroom)
+    public function destroy(ClassWork $classWork)
     {
-        //
+        $classwrok = ClassWork::findOrFail($classWork->id);
+
+        $classwrok->delete();
+
+        return redirect()->route('classrooms.index')->with('success', 'Classwork Deleted Successfully');
+
     }
 }

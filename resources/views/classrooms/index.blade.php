@@ -11,6 +11,10 @@
 
 
 
+ <a href="{{ route('classrooms.create') }}"><button class="btn btn-primary">Create Classroom</button></a>
+
+
+
 <div class="row">
  @foreach ($classrooms as $classroom)
  <div class="card" style="width: 18rem; margin: 10px;">

@@ -64,9 +64,6 @@ class JoinClassroomController extends Controller
             ->where('classroom_id', $classroom_id)
             ->where('user_id', $user_id)
             ->exists();
-
-
-
         if ($exists) {
             throw new Exception('This User Is Joiend To This Classroom');
         }
