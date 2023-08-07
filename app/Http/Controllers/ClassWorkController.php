@@ -111,6 +111,10 @@ class ClassWorkController extends Controller
         // here we use relashinship to store the classwork
         $classwork = $classroom->classworks()->create($request->all());
 
+
+        $classroom->usres()->attach($request->input('student'));
+
+
         return redirect()->route('classrooms.index')->with('success','Classwork Created Successfully');
         // return redirect()->route('classrooms.classworks.index')->with('success','Classwork Created Successfully');
 
@@ -129,9 +133,29 @@ class ClassWorkController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ClassWork $classWork ,Classroom $classroom)
+    public function edit(Request $request , ClassWork $classWork ,Classroom $classroom)
     {
-        //
+        $type = $request->query('type');
+
+
+        $allowd_types = [ClassWork::TYPE_ASSIGNMENT,ClassWork::TYPE_MATERIAL , ClassWork::TYPE_QUESTION];
+
+
+        if(!in_array($type , $allowd_types)){
+            // abort(404);
+
+            $type = ClassWork::TYPE_ASSIGNMENT;
+        }
+
+
+
+
+
+        $assigned =  $classWork->users()->pluck('id')->toArray();
+
+
+        return view('classworks.edit',compact('classroom','type','assigned'));
+
     }
 
     /**
@@ -139,7 +163,12 @@ class ClassWorkController extends Controller
      */
     public function update(Request $request, ClassWork $classWork , Classroom $classroom)
     {
-        //
+        $classroom->update($request->all());
+
+        $classroom->usres()->sync($request->input('students'));
+
+
+        return back()->with('success','Classwork Updated');
     }
 
     /**

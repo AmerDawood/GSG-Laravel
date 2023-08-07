@@ -220,6 +220,6 @@ class Classroom extends Model
     }
 
     public function students(){
-        return $this->usres()->wherePivot('role','=','students');
+        return $this->usres()->wherePivot('role','=','student');
     }
 }
