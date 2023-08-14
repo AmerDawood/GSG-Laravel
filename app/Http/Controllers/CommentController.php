@@ -10,19 +10,20 @@ class CommentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'comment' =>'required|string|min:5',
+            'content' =>'required|string|min:5',
             'id' => 'required',
             'type' =>'required'
         ]);
 
         Auth::user()->comments()->create([
-            'commetable_id' => $request->input('id'),
-            'commetable_type' => 'App\Models\\'. ucfirst($request->input('type')),
+            'commentable_id' => $request->input('id'), 
+            'commentable_type' => 'App\Models\\'. ucfirst($request->input('type')),
             'content' => $request->content,
             'ip' => $request->ip(),
             'user_agent' => $request->header('user-agent'),
-            // 'user_agent' => $request->userAgent(),
         ]);
+
+
 
 
 

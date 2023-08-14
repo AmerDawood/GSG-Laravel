@@ -60,7 +60,7 @@ class ClassWorkController extends Controller
 
 
 
-        $classwork = new ClassWork();
+        $classWork = new ClassWork();
 
         // dd($classwork);
 
@@ -70,7 +70,7 @@ class ClassWorkController extends Controller
         return view('classworks.create',[
             'classroom'=>$classroom,
             'type' => $type,
-            'classwork' => $classwork,
+            'classWork' => $classWork,
         ]);
     }
 
@@ -130,52 +130,51 @@ class ClassWorkController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show( Classroom $classroom,ClassWork $classWork)
-    {
+    public function show(Classroom $classroom, $classWorkId)
+{
+    $classWork = ClassWork::find($classWorkId);
 
-        $classWork = ClassWork::find($classWork->id);
-
-        // dd($classroom);
-
-        // if (!$classWork) {
-        //     abort(404); // Display a "Not Found" page
-        // }
-
-
-        // $classWork->load('comments.user');
-
-      return view('classworks.show',compact('classroom','classWork'));
+    if (!$classWork) {
+        // Handle the case where the ClassWork is not found
+        abort(404);
     }
+
+    return view('classworks.show', compact('classroom', 'classWork'));
+}
+
+    // public function show( Classroom $classroom,ClassWork $classWork)
+    // {
+
+    //     $classWork = ClassWork::find($classroom->id);
+
+
+    //     // $classWork->load('comments.user');
+
+    //   return view('classworks.show',compact('classroom','classWork'));
+    // }
 
     /**
      * Show the form for editing the specified resource.
      */
 
-    public function edit(Request $request , ClassWork $classWork ,Classroom $classroom)
+    public function edit(Request $request, Classroom $classroom, $classWorkId)
     {
+        $classWork = ClassWork::findOrFail($classWorkId);
 
         $type = $request->query('type');
+        $allowedTypes = [ClassWork::TYPE_ASSIGNMENT, ClassWork::TYPE_MATERIAL, ClassWork::TYPE_QUESTION];
 
-
-        $allowd_types = [ClassWork::TYPE_ASSIGNMENT,ClassWork::TYPE_MATERIAL , ClassWork::TYPE_QUESTION];
-
-
-        if(!in_array($type , $allowd_types)) {
-            // abort(404);
-
+        if (!in_array($type, $allowedTypes)) {
             $type = ClassWork::TYPE_ASSIGNMENT;
         }
 
         $assigned = $classWork->users()->pluck('id')->toArray();
 
 
-        // dd($classWork);
-
-
-
-        return view('classworks.edit',compact('classroom','classWork','type','assigned'));
-
+        return view('classworks.edit', compact('classroom', 'classWork', 'type', 'assigned'));
     }
+
+
 
     /**
      * Update the specified resource in storage.

@@ -19,6 +19,11 @@ class ClassWork extends Model
 
 
 
+    protected $table ='class_works';
+
+
+
+
 
 
 

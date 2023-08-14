@@ -9,8 +9,9 @@
 
 
 
-    <h4>Description Is : {{ $classroom->description }}</h4>
+    {{-- <h4>Description Is : {{ $classroom->classworks->title }}</h4> --}}
 
+    <h1>{{ $classWork->title }}</h1>
 
 
     <x-errors></x-errors>
@@ -31,8 +32,8 @@
 
 
 
-            {{-- <input type="hidden" name="id" value="{{ $classWork->id }}"> --}}
-            {{-- <input type="hidden" name="type" value="classwork"> --}}
+            <input type="hidden" name="id" value="{{ $classWork->id }}">
+            <input type="hidden" name="type" value="classwork">
 
 
             <div class="mb-3">
@@ -45,27 +46,22 @@
 
     </form>
 
-
-
-
     <div class="mt-4">
-        {{-- @forelse ($classWork->comments as $comment)
 
-        <div class="row">
+        @forelse ($classWork->comments as $comment)
+        <div class="row" style="padding: 20px">
             <div class="col-md-2">
                 <img src="https://ui-avatars.com/api/?name={{ $comment->user->name }}" alt="">
             </div>
-
             <div class="col-md-10">
-                By {{ $comment->user?->name }} At : {{ $comment->created_at->difFormatHumans() }}
+                By {{ $comment->user?->name }} time: {{ $comment->created_at->diffForHumans() }}
             </div>
         </div>
 
-        @empty
+    @empty
+        <h4 class="text-center">No Comments Found</h4>
+    @endforelse
 
-        <h4 class="text-center">No Comments Found </h4>
-
-        @endforelse --}}
     </div>
 
     </div>

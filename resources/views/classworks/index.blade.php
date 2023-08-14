@@ -47,6 +47,9 @@
                                 <a href="{{ route('classrooms.classworks.edit', [$classwork->classroom->id , $classwork->id]) }}">Edit ClassWork</a>
 
 
+                                <a href="{{ route('classrooms.classworks.show', [$classwork->classroom->id , $classwork->id]) }}">Show ClassWork</a>
+
+
 
                         </div>
                     </div>

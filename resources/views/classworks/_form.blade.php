@@ -3,13 +3,13 @@
 
         <div class="mb-3">
             <label class="form-label">Title</label>
-            <input type="text" class="form-control" name="title" aria-describedby="emailHelp">
+            <input type="text" class="form-control" name="title" value="{{ $classWork->title }}" aria-describedby="emailHelp">
           </div>
 
 
           <div class="mb-3">
             <label class="form-label">Description</label>
-            <input type="text" class="form-control" name="description" value="{{ $classwork->description }}" aria-describedby="emailHelp">
+            <input type="text" class="form-control" name="description" value="{{ $classWork->description }}" aria-describedby="emailHelp">
           </div>
 
     </div>

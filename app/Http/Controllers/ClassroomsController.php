@@ -38,6 +38,7 @@ class ClassroomsController extends Controller
 
 
 
+
         // The Query Builder not work automaticlly with soft delete  like this :
         // $classrooms = DB('classroom')->orderBy('created_at','desc')->dd();   this code doss not  work with query       builder with the soft delete , you must add the where deleted_at == null
 

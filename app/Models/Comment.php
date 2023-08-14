@@ -20,11 +20,18 @@ class Comment extends Model
         'user'
     ];
 
-    public function users(){
-      return  $this->belongsTo(User::class)->withDefault([
-        'name'=>'UnKown User',
-      ]);
+    // public function users(){
+    //   return  $this->belongsTo(User::class)->withDefault([
+    //     'name'=>'UnKown User',
+    //   ]);
+    // }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
+
+
 
 
     public function commentable()
