@@ -11,17 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('classwork_user', function (Blueprint $table) {
-           $table->foreignId('classwork_id')->nullable()->constrained('class_works','id')->cascadeOnDelete();
+        Schema::create('class_work_user', function (Blueprint $table) {
+           $table->foreignId('class_work_id')->nullable()->constrained('class_works','id')->cascadeOnDelete();
            $table->foreignId('user_id')->nullable()->constrained('users','id')->cascadeOnDelete();
            $table->float('grade')->nullable();
            $table->timestamp('submitted_at')->nullable();
-           $table->enum('status',['assignd','draft','submitted','returned'])->default('assignd');
-           $table->timestamp('created_at')->nullable();
-           $table->primary('classwork_id','user_id');
+           $table->enum('status',['assigned','draft','submitted','returned'])->default('assigned');
+           $table->timestamps(); // This will add created_at and updated_at columns
+           $table->primary(['class_work_id', 'user_id']);
 
         });
     }
+
 
     /**
      * Reverse the migrations.

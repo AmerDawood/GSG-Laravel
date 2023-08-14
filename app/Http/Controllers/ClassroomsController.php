@@ -58,7 +58,7 @@ class ClassroomsController extends Controller
 
         // $request->url();
 
-        $classroom = Classroom::find($id);
+        $classroom = Classroom::findOrFail($id);
 
         $invetation_link = URL::signedRoute('classroom.join',[
             'classroom'=>$classroom->id,
@@ -74,12 +74,6 @@ class ClassroomsController extends Controller
 
 
 
-
-
-
-
-
-
     public function edit($id)
     {
         $classroom = Classroom::find($id);
@@ -92,18 +86,6 @@ class ClassroomsController extends Controller
     public function update(ClassroomRequest $request, $id)
     {
         $classroom = Classroom::find($id);
-
-
-
-
-
-        // $request->validate([
-        //     'name' => 'required',
-        //     'section' => 'required',
-        //     'subject' => 'required',
-        //     'room' => 'required',
-        //     // 'cover_image' => 'required',
-        // ]);
 
         if ($request->hasFile('cover_image')) {
             if ($classroom->cover_image_path) {
@@ -132,31 +114,6 @@ class ClassroomsController extends Controller
 
     public function store(ClassroomRequest $request)
     {
-
-
-        // the data in ClassroomRequest validated
-        // $validated = $request->validated();
-        // $messages = [
-        //     'name.required'=>'The name is requierd bro :)'
-        // ];
-
-
-        // $rules =[
-        //     'name' => 'required|string|max:255',
-        //     'section' => 'required|string|max:255',
-        //     'subject' => 'required|string|max:255',
-        //     'room' => 'required|string|max:255',
-        //     // 'cover_image' => 'image|dimensions:width=200,height=100',
-        //     'cover_image' => 'required|image',
-        // ];
-
-
-
-        // $request->validate($rules,$messages);
-
-
-
-
 
         if ($request->hasFile('cover_image')) {
             $file = $request->file('cover_image');

@@ -35,19 +35,17 @@
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#flush-collapse{{ $classwork->id }}" aria-expanded="false"
                                 aria-controls="flush-collapseOne">
-                                {{ $classwork->title }} / {{ $classwork->topic->name }}
+                             {{ $classwork->id }}/   {{ $classwork->title }} / {{ $classwork->topic->name }}
                             </button>
                         </h2>
                         <div id="flush-collapse{{ $classwork->id }}" class="accordion-collapse collapse"
                             data-bs-parent="#accordionFlushExample">
                             <div class="accordion-body"> {{ $classwork->description }}</div>
-                            <button class="btn btn-sm btn-danger btn-delete"><i class="fas fa-trash"></i></button>
-                            <form class="d-inline"
-                                action="{{ route('classrooms.classworks.destroy', ['classwork' => $classwork->id, 'classroom' => $classroom->id]) }}"
-                                method="post">
-                                @csrf
-                                @method('delete')
-                            </form>
+
+
+
+                                <a href="{{ route('classrooms.classworks.edit', [$classwork->classroom->id , $classwork->id]) }}">Edit ClassWork</a>
+
 
 
                         </div>

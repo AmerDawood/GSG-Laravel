@@ -13,7 +13,11 @@ class JoinClassroomController extends Controller
     public function create($id)
     {
 
-        $classroom = Classroom::active()->findOrFail($id);
+        $classroom = Classroom::active()->find($id);
+
+        // $classroom = Classroom::all();
+
+        // dd($classroom);
 
 
         try {
@@ -41,20 +45,13 @@ class JoinClassroomController extends Controller
 
             $this->exists($id, Auth::id());
         } catch (Exception $e) {
-            return redirect()->route('show.classroom', $id);
+            return redirect()->route('classrooms.show', $id);
         }
-
-        // DB::table('classroom_user')->insert([
-        //     'classroom_id' => $classroom->id,
-        //     'user_id' => Auth::id(),
-        //     'role' => $request->input('role', 'student'),
-        //     'created_at' => now()->format('Y-m-d H:i:s')
-        // ]);
 
         $classroom->join(Auth::id(), $request->input('role','student'));
 
 
-        return redirect()->route('show.classroom',$id);
+        return redirect()->route('classrooms.show',$id);
     }
 
 

@@ -10,7 +10,15 @@ class ClassworkUser extends Pivot
 {
     use HasFactory;
 
+    protected $table = 'classwork_user';
 
+
+
+    public function setUpdatedAt($value)
+    {
+        // $this->{$this->getUpdatedAtColumn()} = $value;
+         return $this;
+    }
 
 
 

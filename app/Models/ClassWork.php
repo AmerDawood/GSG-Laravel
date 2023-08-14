@@ -21,6 +21,8 @@ class ClassWork extends Model
 
 
 
+
+
     protected $fillable = ['classroom_id','user_id','topic_id','title','description','type','status','published_at','options'];
 
 
@@ -48,6 +50,14 @@ class ClassWork extends Model
 
        public function users()
        {
-           return $this->belongsToMany(User::class)->withPivot('grade','submitted_at','status','status');
+           return $this->belongsToMany(User::class)->withPivot('grade','submitted_at','status');
+       }
+
+
+
+       public function comments()
+       {
+          return $this->morphMany(Comment::class,'commentable')->latest();
        }
 }
+

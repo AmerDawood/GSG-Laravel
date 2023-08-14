@@ -39,7 +39,7 @@ class Classroom extends Model
 
 
         static::observe(ClassroomObserver::class);
-        static::addGlobalScope(new UserClassroomScope);
+        // static::addGlobalScope(new UserClassroomScope);
 
 
         /*
@@ -200,16 +200,17 @@ class Classroom extends Model
     public function usres()
     {
         return $this->belongsToMany(
-            User::class, // Related Model
-            'classroom_user', // Pivot Table
-            'classroom_id',  // FK for current table in pivot model
-            'user_id',      // FK for current table in pivot model
-            'id',             // PK for current model
-            'id'             // PK for related model
+            User::class,       // Related Model
+            'classroom_user',  // Pivot Table
+            'classroom_id',    // FK for current table in pivot model
+            'user_id',         // FK for current table in pivot model
+            'id',              // PK for current model
+            'id'               // PK for related model
 
         )->withPivot(['role','created_at'])
-        ->as('join')  // to replase pivot name to (join)
-         ;
+        // ->withTimestamp()
+        ->as('join');  // to replase pivot name to (join)
+
         //->wherePivot('role' ,'teacher')
     }
 

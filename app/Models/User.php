@@ -93,8 +93,14 @@ class User extends Authenticatable
 
     public function classworks()
     {
-        
+        return $this->belongsToMany(ClassWork::class)
+
+         ->with(ClassworkUser::class)
+         ->withPivot(['grade','status','submitted_at','created_at']);
     }
+
+
+    
 
 
 
