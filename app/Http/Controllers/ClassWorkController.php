@@ -7,6 +7,7 @@ use App\Models\ClassWork;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 use function PHPSTORM_META\type;
 
@@ -25,6 +26,7 @@ class ClassWorkController extends Controller
         ->get();
 
         // dd($classworks);
+
         // or
         // $classworks =$classroom->classworks;
 
@@ -79,6 +81,8 @@ class ClassWorkController extends Controller
      */
     public function store(Request $request, Classroom $classroom)
     {
+
+        // dd($request->all());
         $type = $request->query('type');
 
 
@@ -95,6 +99,8 @@ class ClassWorkController extends Controller
             'title'=>['required','string','max:255'],
             'description'=>['nullable','string'],
             'topic_id'=>['nullable','int','exists:topics,id'],
+            'options.grade' => [Rule::requiredIf(fn() => $type == 'assignemt'),'numeric','min:0'],
+            'options.due' => ['nullable','date','after:published_at'],
         ]);
 
 
@@ -110,8 +116,26 @@ class ClassWorkController extends Controller
 
 
 
-        DB::transaction(function() use ($classroom , $request) {
-            $classwork = $classroom->classworks()->create($request->all());
+        DB::transaction(function() use ($classroom , $request,$type) {
+
+
+            $data = [
+                'user_id' =>auth()->user()->id,
+                'type' =>$type,
+                'title' =>$request->input('title'),
+                'description' =>$request->input('description'),
+                'topic_id' =>$request->input('topic_id'),
+                'published_at' => $request->input('published_at', now()),
+                // 'options' => json_encode([
+                //     'grade' =>$request->input('grade'),
+                //     'due' =>$request->input('due'),
+                // ])
+                'options' => [
+                    'grade' =>$request->input('grade'),
+                    'due' =>$request->input('due'),
+                ]
+            ];
+            $classwork = $classroom->classworks()->create($data);
 
 
             $classroom->usres()->attach($request->input('student'));
@@ -142,31 +166,25 @@ class ClassWorkController extends Controller
     return view('classworks.show', compact('classroom', 'classWork'));
 }
 
-    // public function show( Classroom $classroom,ClassWork $classWork)
-    // {
 
-    //     $classWork = ClassWork::find($classroom->id);
-
-
-    //     // $classWork->load('comments.user');
-
-    //   return view('classworks.show',compact('classroom','classWork'));
-    // }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
 
     public function edit(Request $request, Classroom $classroom, $classWorkId)
     {
+
+
         $classWork = ClassWork::findOrFail($classWorkId);
+        // dd($classWork->type);
+     
 
-        $type = $request->query('type');
-        $allowedTypes = [ClassWork::TYPE_ASSIGNMENT, ClassWork::TYPE_MATERIAL, ClassWork::TYPE_QUESTION];
+        $type = $classWork->type;
 
-        if (!in_array($type, $allowedTypes)) {
-            $type = ClassWork::TYPE_ASSIGNMENT;
-        }
+
+        // $type = $request->query('type');
+        // $allowedTypes = [ClassWork::TYPE_ASSIGNMENT, ClassWork::TYPE_MATERIAL, ClassWork::TYPE_QUESTION];
+
+        // if (!in_array($type, $allowedTypes)) {
+        //     $type = ClassWork::TYPE_ASSIGNMENT;
+        // }
 
         $assigned = $classWork->users()->pluck('id')->toArray();
 
@@ -176,17 +194,33 @@ class ClassWorkController extends Controller
 
 
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, ClassWork $classWork , Classroom $classroom)
+    public function update(Request $request, $classroom_id, $classwork_id)
     {
-        $classroom->update($request->all());
+        $classWork = ClassWork::findOrFail($classwork_id);
+        $classroom = Classroom::findOrFail($classroom_id);
+
+        $type = $classWork->type;
+
+        $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'topic_id' => ['nullable', 'int', 'exists:topics,id'],
+            'options.grade' => [Rule::requiredIf(fn() => $type == 'assignment'), 'numeric', 'min:0'],
+            'options.due' => ['nullable', 'date', 'after:published_at'],
+        ]);
+
+        $classWork->update([
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'topic_id' => $request->input('topic_id'),
+            // ... other attributes
+            'grade' => $request->input('options.grade'),
+            'due' => $request->input('options.due'),
+        ]);
 
         $classroom->usres()->sync($request->input('students'));
 
-
-        return back()->with('success','Classwork Updated');
+        return back()->with('success', 'Classwork Updated');
     }
 
     /**

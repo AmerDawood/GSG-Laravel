@@ -34,7 +34,7 @@ class ClassroomsController extends Controller
         // ->withoutGlobalScopes() // stop all global scopes  also soft delete
         ->withoutGlobalScope(UserClassroomScope::class)
 
-        ->get();
+        ->paginate(5);
 
 
 

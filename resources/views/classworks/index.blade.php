@@ -27,7 +27,6 @@
         @forelse($classworks as $group)
             <h3>{{ $group->first()->topic->name }}</h3>
 
-
             <div class="accordion accordion-flush" id="accordionFlushExample">
                 @foreach ($group as $classwork)
                     <div class="accordion-item">
@@ -41,29 +40,23 @@
                         <div id="flush-collapse{{ $classwork->id }}" class="accordion-collapse collapse"
                             data-bs-parent="#accordionFlushExample">
                             <div class="accordion-body"> {{ $classwork->description }}</div>
-
-
-
-                                <a href="{{ route('classrooms.classworks.edit', [$classwork->classroom->id , $classwork->id]) }}">Edit ClassWork</a>
-
-
-                                <a href="{{ route('classrooms.classworks.show', [$classwork->classroom->id , $classwork->id]) }}">Show ClassWork</a>
-
-
-
+                            <a href="{{ route('classrooms.classworks.edit', [$classwork->classroom->id , $classwork->id]) }}">Edit ClassWork</a>
+                            <a href="{{ route('classrooms.classworks.show', [$classwork->classroom->id , $classwork->id]) }}">Show ClassWork</a>
                         </div>
                     </div>
                 @endforeach
-
-
             </div>
+
+
         @empty
 
             <p class="text-center fs3"> No Classworks Found</p>
         @endforelse
 
-
     </div>
+
+
+
 
     </div>
 
