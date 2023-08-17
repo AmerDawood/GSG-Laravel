@@ -12,6 +12,10 @@ class ClassworkUser extends Pivot
 
     protected $table = 'classwork_user';
 
+    public function getUpdatedAtColumn()
+    {
+        
+    }
 
 
     public function setUpdatedAt($value)

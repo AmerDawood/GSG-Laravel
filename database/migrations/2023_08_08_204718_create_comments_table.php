@@ -18,7 +18,6 @@ return new class extends Migration
             $table->morphs('commentable');
             $table->text('content');
 
-
             $table->string('ip',15);
             $table->string('user_agent',512)->nullable();
 

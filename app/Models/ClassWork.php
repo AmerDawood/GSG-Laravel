@@ -98,5 +98,11 @@ class ClassWork extends Model
        {
           return $this->morphMany(Comment::class,'commentable')->latest();
        }
+
+
+       public function submissions()
+       {
+         return  $this->hasMany((Submission::class));
+       }
 }
 

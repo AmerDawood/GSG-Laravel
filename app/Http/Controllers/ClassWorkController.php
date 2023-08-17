@@ -154,16 +154,24 @@ class ClassWorkController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Classroom $classroom, $classWorkId)
+    public function show(Classroom $classroom, $classWorkId, ClassWork $classWork)
 {
+
+
+
     $classWork = ClassWork::find($classWorkId);
+
+    // dd($classWork);
+
+    $submissions = Auth::user()->submissions()->where('classwork_id',$classWork->id)->get();
+
 
     if (!$classWork) {
         // Handle the case where the ClassWork is not found
         abort(404);
     }
 
-    return view('classworks.show', compact('classroom', 'classWork'));
+    return view('classworks.show', compact('classroom', 'classWork','submissions'));
 }
 
 
@@ -174,7 +182,7 @@ class ClassWorkController extends Controller
 
         $classWork = ClassWork::findOrFail($classWorkId);
         // dd($classWork->type);
-     
+
 
         $type = $classWork->type;
 

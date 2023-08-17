@@ -7,6 +7,7 @@ use App\Http\Controllers\ClassroomsController;
 use App\Http\Controllers\ClassWorkController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\JoinClassroomController;
+use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\TopicsController;
 
 /*
@@ -72,6 +73,9 @@ Route::delete('classrooms/{classroom}/people',[ClassroomPeopleController::class,
 
 
 Route::post('comment',[CommentController::class,'store'])->name('comment.store');
+Route::post('classworks/{classwork}/submisstions',[SubmissionController::class,'store'])->name('submmistions.store');
+
+Route::get('submisstions/{submisstion}/file',[SubmissionController::class,'file'])->name('submmistions.file');
 
 
 

@@ -54,7 +54,6 @@ class JoinClassroomController extends Controller
         return redirect()->route('classrooms.show',$id);
     }
 
-
     protected function exists($classroom_id, $user_id)
     {
         $exists = DB::table('classroom_user')
