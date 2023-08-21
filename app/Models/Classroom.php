@@ -111,7 +111,7 @@ class Classroom extends Model
     {
 
 
-        $this->usres()->attach($user_id,[
+        $this->users()->attach($user_id,[
             'role' => $role,
             'created_at' => now()->format('Y-m-d H:i:s')
         ]);
@@ -197,7 +197,7 @@ class Classroom extends Model
 
 
 
-    public function usres()
+    public function users()
     {
         return $this->belongsToMany(
             User::class,       // Related Model
@@ -217,10 +217,11 @@ class Classroom extends Model
 
 
     public function teachers(){
-        return $this->usres()->wherePivot('role','=','teacher');
+        return $this->users()->wherePivot('role','=','teacher');
     }
 
     public function students(){
-        return $this->usres()->wherePivot('role','=','student');
+        return $this->users()->wherePivot('role','=','student');
     }
+
 }

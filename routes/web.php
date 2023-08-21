@@ -73,9 +73,10 @@ Route::delete('classrooms/{classroom}/people',[ClassroomPeopleController::class,
 
 
 Route::post('comment',[CommentController::class,'store'])->name('comment.store');
-Route::post('classworks/{classwork}/submisstions',[SubmissionController::class,'store'])->name('submmistions.store');
+Route::post('classworks/{classwork}/submisstions',[SubmissionController::class,'store'])->name('submmistions.store')->middleware('can:create,App/Models/ClassWork');
 
 Route::get('submisstions/{submisstion}/file',[SubmissionController::class,'file'])->name('submmistions.file');
+// Route::get('submmistions/file/{submission}', [SubmissionController::class,'file'])->name('submmistions.file');
 
 
 
@@ -100,7 +101,6 @@ Route::get('/dashboard', function () {
 
 
 require __DIR__.'/auth.php';
-
 
 
 

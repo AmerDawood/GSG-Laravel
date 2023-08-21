@@ -10,11 +10,13 @@ class ClassworkUser extends Pivot
 {
     use HasFactory;
 
-    protected $table = 'classwork_user';
+    // protected $table = 'classwork_user';
+    protected $table = 'class_work_user';
+
 
     public function getUpdatedAtColumn()
     {
-        
+
     }
 
 

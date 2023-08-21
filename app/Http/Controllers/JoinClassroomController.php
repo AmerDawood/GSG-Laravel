@@ -34,6 +34,7 @@ class JoinClassroomController extends Controller
     public function store(Request $request, $id)
     {
 
+
         $request->validate([
             'role' => 'in:student,teacher'
         ]);
@@ -42,14 +43,14 @@ class JoinClassroomController extends Controller
 
 
         try {
-
-            $this->exists($id, Auth::id());
+          $this->exists($id, Auth::id());
         } catch (Exception $e) {
             return redirect()->route('classrooms.show', $id);
         }
 
         $classroom->join(Auth::id(), $request->input('role','student'));
 
+        // dd($request->all());
 
         return redirect()->route('classrooms.show',$id);
     }

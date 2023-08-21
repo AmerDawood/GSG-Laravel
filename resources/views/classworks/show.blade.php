@@ -9,10 +9,9 @@
 
 
 
-    {{-- <h4>Description Is : {{ $classroom->classworks->title }}</h4> --}}
 
-    <h1>Classwork Title : {{ $classWork->title }}</h1>
-    <h1>Classwork Description : {{ $classWork->description }}</h1>
+    <h3 style="color: blue"> {{ $classWork->title }}</h3>
+    <h5> {{ $classWork->description }}</h5>
 
 
 
@@ -39,7 +38,7 @@
 
             <div class="mb-3">
                 <label class="form-label">Comment</label>
-                <input type="text" class="form-control" name="content" aria-describedby="emailHelp">
+                <input type="text" class="form-control" name="content" placeholder="Add Your Comment Here " aria-describedby="emailHelp">
               </div>
         </div>
     </div>
@@ -51,7 +50,7 @@
 
         @forelse ($classWork->comments as $comment)
 
-        <div class="row border border-secondery" style="padding: 20px">
+        <div class="row border border-secondery" style="padding: 20px;margin:10px;">
             <div class="col-md-2">
                 <img src="https://ui-avatars.com/api/?name={{ $comment->user->name }}" alt="">
             </div>
@@ -72,36 +71,37 @@
     </div>
 
 
+     @can('submissions.create',[$classWork])
 
-    <div class="col-md-4">
-
-
-
+     <div class="col-md-4">
         @if ($submissions->count())
+        <div class="borders rounded p-3 bg-light">
         <ul>
+            <h4>Your Submitted Files</h4>
+
             @foreach ($submissions as  $item)
 
-            <li><a href="{{ route('submmistions.file',$item->content) }}"></a>File {{ $loop->itetration }}</li>
+            <li><a href="{{ route('submmistions.file',$item->id) }}">File # {{ $loop->iteration }}</a></li>
 
             @endforeach
         </ul>
+        </div>
 
         @else
         <div class="borders rounded p-3 bg-light">
             <h4>Upload Files</h4>
-            <form action="{{ route('submmistions.store',$classWork->id) }}" method="POST" enctype="application/form-data">
-            @csrf
+            <form action="{{ route('submmistions.store', $classWork->id) }}" method="POST" enctype="multipart/form-data">
+                @csrf
 
-            <div class="mb-3">
-                <label class="form-label">Uplode Files</label>
-                <input type="file" class="form-control" multiple name="files[]" accept="image/*,application/pdf" placeholder="Select Your Files" aria-describedby="emailHelp">
-              </div>
+                <div class="mb-3">
+                    <label class="form-label">Upload Files</label>
+                    <input type="file" class="form-control" multiple name="files[]" accept="image/*,application/pdf" placeholder="Select Your Files" aria-describedby="emailHelp">
+                </div>
 
-
-              <button type="submit" class="btn btn-primary">Submit</button>
-
+                <button type="submit" class="btn btn-primary">Submit</button>
             </form>
-          </div>
+        </div>
+
 
         @endif
 
@@ -109,6 +109,10 @@
 
 
     </div>
+     @endcan
+
+
+
      </div>
     </div>
 

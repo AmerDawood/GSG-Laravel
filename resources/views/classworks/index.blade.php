@@ -4,9 +4,12 @@
 
 @section('content')
     <h1>Classworks</h1>
+    <x-alert  name='success'></x-alert>
+    <x-alert  name='error'></x-alert>
 
 
-    <div class="dropdown">
+     @can('classworks.create',[$classroom])
+     <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             + Create
         </button>
@@ -21,6 +24,8 @@
             </li>
         </ul>
     </div>
+
+     @endcan
 
 
     <div class="row">

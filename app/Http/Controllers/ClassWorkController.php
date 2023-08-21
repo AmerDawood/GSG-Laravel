@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Classroom;
 use App\Models\ClassWork;
+use App\Models\ClassworkUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 use function PHPSTORM_META\type;
@@ -18,6 +20,10 @@ class ClassWorkController extends Controller
     public function index(Classroom $classroom)
     {
         // lazy , get , pagination
+
+        // viewAny
+        // view-any
+        $this->authorize('view-any',[ClassWork::class,$classroom]);
 
 
         $classworks =$classroom->classworks()
@@ -43,6 +49,15 @@ class ClassWorkController extends Controller
      */
     public function create( Request $request ,Classroom $classroom)
     {
+
+        // if(! Gate::allows('classworks.create',[$classroom])){
+        //     abort(403);
+        // }
+
+         $this->authorize('create',[ClassWork::class,$classroom]);
+
+        // Gate::authorize('classworks.create',[$classroom]);
+
 
         // $type = request('type');
 
@@ -81,6 +96,9 @@ class ClassWorkController extends Controller
      */
     public function store(Request $request, Classroom $classroom)
     {
+        if(Gate::denies('classworks.create',[$classroom])){
+            abort(403);
+        }
 
         // dd($request->all());
         $type = $request->query('type');
@@ -126,25 +144,37 @@ class ClassWorkController extends Controller
                 'description' =>$request->input('description'),
                 'topic_id' =>$request->input('topic_id'),
                 'published_at' => $request->input('published_at', now()),
+                'options' => [
+                    'grade' => $request->input('options.grade'),
+                    'due' => $request->input('options.due'),
+                ],
                 // 'options' => json_encode([
                 //     'grade' =>$request->input('grade'),
                 //     'due' =>$request->input('due'),
                 // ])
-                'options' => [
-                    'grade' =>$request->input('grade'),
-                    'due' =>$request->input('due'),
-                ]
+                // 'options' => [
+                //     'grade' =>$request->input('grade'),
+                //     'due' =>$request->input('due'),
+                // ]
             ];
             $classwork = $classroom->classworks()->create($data);
 
+            $users = $request->post("student");
 
-            $classroom->usres()->attach($request->input('student'));
+            // dd($classwork);
+            foreach ($users as $userId) {
+                $classwork_user = new ClassworkUser();
+                $classwork_user->user_id = $userId;
+                $classwork_user->class_work_id = $classwork->id;
+                $classwork_user->save();
+            }
+
+        //  $test =  $classwork->users()->attach($request->input('student'));
+            // dd($test);
 
         });
 
-
-
-        return redirect()->route('classrooms.index')->with('success','Classwork Created Successfully');
+        return redirect()->route('classrooms.classworks.index',$classroom->id)->with('success','Classwork Created Successfully');
         // return redirect()->route('classrooms.classworks.index')->with('success','Classwork Created Successfully');
 
 
@@ -157,7 +187,8 @@ class ClassWorkController extends Controller
     public function show(Classroom $classroom, $classWorkId, ClassWork $classWork)
 {
 
-
+    $this->authorize('view',$classWork);
+    // Gate::authorize('classworks.view',[$classWork]);
 
     $classWork = ClassWork::find($classWorkId);
 
@@ -180,7 +211,12 @@ class ClassWorkController extends Controller
     {
 
 
+
+
         $classWork = ClassWork::findOrFail($classWorkId);
+
+        $this->authorize('update',$classWork);
+
         // dd($classWork->type);
 
 
@@ -195,6 +231,7 @@ class ClassWorkController extends Controller
         // }
 
         $assigned = $classWork->users()->pluck('id')->toArray();
+        // dd($assigned);
 
 
         return view('classworks.edit', compact('classroom', 'classWork', 'type', 'assigned'));
@@ -207,12 +244,16 @@ class ClassWorkController extends Controller
         $classWork = ClassWork::findOrFail($classwork_id);
         $classroom = Classroom::findOrFail($classroom_id);
 
+        $this->authorize('update',$classWork);
+
+
         $type = $classWork->type;
 
         $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'topic_id' => ['nullable', 'int', 'exists:topics,id'],
+            'published_at' => ['nullable'],
             'options.grade' => [Rule::requiredIf(fn() => $type == 'assignment'), 'numeric', 'min:0'],
             'options.due' => ['nullable', 'date', 'after:published_at'],
         ]);
@@ -221,15 +262,25 @@ class ClassWorkController extends Controller
             'title' => $request->input('title'),
             'description' => $request->input('description'),
             'topic_id' => $request->input('topic_id'),
-            // ... other attributes
-            'grade' => $request->input('options.grade'),
-            'due' => $request->input('options.due'),
+            'published_at' => $request->input('published_at'),
+            'options' => [
+                'grade' => $request->input('options.grade'),
+                'due' => $request->input('options.due'),
+            ],
         ]);
+        $users = $request->input('students', []); // Use an empty array if no students are selected
 
-        $classroom->usres()->sync($request->input('students'));
+        foreach ($users as $userId) {
+            $classWork->users()->syncWithoutDetaching([$userId]);
+        }
+
+        // $classroom->users()->sync($request->input('students'));
+        // $assigned = $classWork->users()->pluck('id')->toArray();
+
 
         return back()->with('success', 'Classwork Updated');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -237,6 +288,9 @@ class ClassWorkController extends Controller
     public function destroy(ClassWork $classWork)
     {
         $classwrok = ClassWork::findOrFail($classWork->id);
+
+        $this->authorize('update',$classwrok);
+
 
         $classwrok->delete();
 

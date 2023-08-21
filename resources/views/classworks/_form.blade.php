@@ -21,14 +21,17 @@
 
         <div class="form-group" style="padding-bottom: 30px">
             <label for="grade">Published At</label>
-            <input type="date" min="0" name="published_at" id="published_at" value="{{ $classWork->published_at ?? '' }}" class="form-control">
+            <input type="date" min="0" name="published_at" id="published_at"
+                   value="{{ isset($classWork->published_at) ? date('Y-m-d', strtotime($classWork->published_at)) : '' }}"
+                   class="form-control">
         </div>
+
 
 
         <div>
             @foreach ($classroom->students as $student)
             <div class="form-check">
-                <input class="form-check-input" name="students[]" type="checkbox" value="{{ $student->id }}" id="std-{{ $student->id }}" @checked( !isset($asigned) || in_array($student->id,$assignment ?? []))>
+                <input class="form-check-input" name="student[]" type="checkbox" value="{{ $student->id }}" id="std-{{ $student->id }}" @checked( !isset($asigned) || in_array($student->id,$assignment ?? []))>
                 <label class="form-check-label" for="std-{{ $student->id }}">
                   {{ $student->name }}
                 </label>
@@ -36,6 +39,10 @@
 
             @endforeach
         </div>
+
+
+
+
 
 
 

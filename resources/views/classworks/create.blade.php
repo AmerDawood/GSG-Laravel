@@ -9,7 +9,7 @@
 
     <x-errors></x-errors>
 
-    <form action="{{ route('classrooms.classworks.store',[$classroom->id, 'type'=>$type]) }}" method="POST">
+    <form action="{{ route('classrooms.classworks.store',[$classroom->id, 'type'=>$type]) }}" method="POST" enctype="multipart/form-data">
         @csrf
 
 

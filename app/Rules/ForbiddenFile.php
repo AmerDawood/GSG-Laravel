@@ -25,5 +25,6 @@ class ForbiddenFile implements ValidationRule
             $fail('File type not allowed');
 
          }
+
     }
 }
