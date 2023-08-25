@@ -23,7 +23,7 @@ class TopicRequest extends FormRequest
     {
         return [
 
-            'name' => ['required','string','max:255',function($attribute , $value,$fail){
+            'name' => ['required','string','max:255',function($attribute , $value, $fail){
                 if($value == 'admin'){
                   return $fail("The name is Not Available");
                 }

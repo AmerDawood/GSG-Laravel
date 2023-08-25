@@ -7,7 +7,7 @@
 
 
 @section('content')
-<h1>All Classrooms</h1>
+<h1>{{ __('site.Classrooms') }} {{ App::isLocal('ar') ? "Ar" : "En"}}</h1>
 
 
 

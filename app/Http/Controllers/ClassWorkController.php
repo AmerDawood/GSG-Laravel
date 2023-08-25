@@ -29,6 +29,38 @@ class ClassWorkController extends Controller
         $classworks =$classroom->classworks()
         ->with('topic') // Eager Load
         ->orderBy('published_at')
+        ->where(function($query){
+            $query->wherehas('users',function($query){
+             $query->where('id','=',Auth::id());
+         })
+
+         ->orwherehas('classroom.teachers',function($query){
+            $query->where('id','=',Auth::id());
+         });
+
+         })
+
+         /*
+
+         ->where(function($query){
+
+         $query->whereRaw('EXISTS (SELECT 1 FROM classwork_user
+
+         WHERE classwork_user.classwork_id =classworks.id
+
+         AND classwork_user.user_id= ?)',[Auth::id()]);
+         $query->orWhereRaw('EXISTS (SELECT 1 FROM classroom_user
+         WHERE classroom_user.classroom_id =classworks.classroom_id
+         AND classroom_user.user_id=?
+         AND classroom_user.role=?
+
+         )',[Auth::id(),'teacher']);
+
+         })
+
+         */
+
+
         ->get();
 
         // dd($classworks);
@@ -177,8 +209,6 @@ class ClassWorkController extends Controller
         return redirect()->route('classrooms.classworks.index',$classroom->id)->with('success','Classwork Created Successfully');
         // return redirect()->route('classrooms.classworks.index')->with('success','Classwork Created Successfully');
 
-
-
     }
 
     /**
@@ -245,6 +275,8 @@ class ClassWorkController extends Controller
         $classroom = Classroom::findOrFail($classroom_id);
 
         $this->authorize('update',$classWork);
+
+        // return strip_tags($request->post('description',['p', 'h1' ,'li' ,'ol']));
 
 
         $type = $classWork->type;

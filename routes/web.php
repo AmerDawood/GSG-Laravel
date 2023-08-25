@@ -9,6 +9,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\JoinClassroomController;
 use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\TopicsController;
+use App\Http\Middleware\ApplyUserPreferences;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +21,9 @@ use App\Http\Controllers\TopicsController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::middleware(['auth'])->group(function(){
+// Route::middleware(['auth','user.preferences'])->group(function(){
+Route::middleware(['auth' , 'user.preferences'])->group(function(){
+
 
     Route::get('/topics/trashed',[TopicsController::class,'trashed'])->name('topic.trashed');
 

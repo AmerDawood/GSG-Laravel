@@ -12,6 +12,7 @@ use App\Policies\ClassroomPolicy;
 use App\Policies\ClassworkPolicy;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
@@ -32,6 +33,7 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
+
          // befor , Gate , after
 
 
@@ -42,6 +44,9 @@ class AuthServiceProvider extends ServiceProvider
             }
          });
          /*
+
+         We replas all this using Policy
+
         Gate::define('classworks.view', function (User $user, ClassWork $classWork) {
 
           $teacher =  $user->classrooms()
@@ -86,25 +91,21 @@ class AuthServiceProvider extends ServiceProvider
         });
 
 
-
+     */
         Gate::define('submissions.create',function(User $user , ClassWork $classWork){
             $teacher =  $user->classrooms()
             ->wherePivot('classroom_id', '=', $classWork->classroom_id)
             ->wherePivot('role', '=', 'teacher')->exists();
-
             if($teacher){
                 return false;
-
             }
-
 
             return $user->classworks()
             ->withPivot('classwork_id','=',$classWork->id)
             ->exists();
 
-
         });
 
-        */
+
     }
 }

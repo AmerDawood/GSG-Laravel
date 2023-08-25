@@ -39,10 +39,12 @@ class Classroom extends Model
 
 
         static::observe(ClassroomObserver::class);
+
+        // GLOBAL SCOPE
         // static::addGlobalScope(new UserClassroomScope);
 
 
-        /*
+/*
 
 
         static::creating(function(Classroom $classroom){
@@ -85,6 +87,7 @@ class Classroom extends Model
         $query->where('status', '=', 'active');
     }
 
+     // local scope without argement
 
     //   public function scopeResent(Builder $query){
 
@@ -153,6 +156,7 @@ class Classroom extends Model
     //     return 'https://placehold.co/800x300';
 
     //   }
+
 
 
     // Accessor for not found Attribute

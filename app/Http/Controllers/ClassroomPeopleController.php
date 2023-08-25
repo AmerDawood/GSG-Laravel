@@ -11,10 +11,6 @@ class ClassroomPeopleController extends Controller
     public function index(Classroom $classroom)
 
     {
-
-        // dd($classroom->usres );
-
-        // dd( $classroom->classworks->first()->users);
         return view('classrooms.people',compact('classroom'));
 
     }
@@ -26,7 +22,7 @@ class ClassroomPeopleController extends Controller
     {
 
         $request->validate([
-            'user_id' =>['required',/*'exists:classroom_user,user_id'*/]
+            'user_id' =>['required']
         ]);
 
         $user_id = $request->input('user_id');

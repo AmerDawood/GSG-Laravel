@@ -20,33 +20,33 @@ class ClassroomsController extends Controller
 
     public function __construct(){
         $this->middleware('auth');
-        $this->authorizeResource(Classroom::class);
+        // $this->authorizeResource(Classroom::class);
     }
 
     public function index()
     {
 
 
-        // $classrooms = Classroom::orderBy('created_at', 'desc')->dd();
 
 
         // when you need to get local scope get only the name without scope in start
         $classrooms = Classroom::
-        // active()
-        // ->resent()
-        // ->status('active')
+        // active()  // loacl scope
+        // ->resent() // loacla scope
+        // ->status('active') // local scope
         where('user_id',Auth::id())->
         orderBy('created_at', 'desc')
-        // ->withoutGlobalScopes() // stop all global scopes  also soft delete
+        // stop all global scopes  also soft delete
+        // ->withoutGlobalScopes()
         ->withoutGlobalScope(UserClassroomScope::class)
-
         ->paginate(5);
 
 
 
 
         // The Query Builder not work automaticlly with soft delete  like this :
-        // $classrooms = DB('classroom')->orderBy('created_at','desc')->dd();   this code doss not  work with query       builder with the soft delete , you must add the where deleted_at == null
+        // $classrooms = DB('classroom')->orderBy('created_at','desc')->dd();
+        // this code doss not  work with query builder with the soft delete , you must add the where deleted_at == null
 
         return view('classrooms.index', compact('classrooms'));
     }
@@ -63,7 +63,7 @@ class ClassroomsController extends Controller
     public function show($id)
     {
 
-        // $request->url();
+        // $request->url(); to get the URL
 
         $classroom = Classroom::findOrFail($id);
 
@@ -130,12 +130,6 @@ class ClassroomsController extends Controller
             ]);
         }
 
-        // $request->merge([
-        //     'code' => Str::random(10)
-        // ]);
-        // $request->merge([
-        //     'user_id' =>Auth::id(),
-        // ]);
 
 
         DB::beginTransaction();
@@ -166,15 +160,10 @@ class ClassroomsController extends Controller
 
             DB::rollBack();
 
-
             return back()->with('error',$e->getMessage())->withInput();
 
         }
-
-
-
         //PRG
-
         return redirect()->route('classrooms.index')->with('success', 'Classroom Created Successfully');;
     }
 
@@ -223,14 +212,12 @@ class ClassroomsController extends Controller
         $classroom = Classroom::withTrashed()->findOrFail($id);
 
         $classroom->forceDelete();
+
         // if ($classroom->path) {
         //     Storage::disk('public')->delete($classroom->cover_image_path);
         // }
 
         //  Classroom::deleteCoverImage($classroom->cover_image_path);
-
-
-
 
 
         return redirect()->route('classroom.trashed')->with('success', 'Classroom # ({$classroom->name}) Force Delete Successfully');

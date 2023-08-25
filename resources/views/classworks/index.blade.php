@@ -44,7 +44,7 @@
                         </h2>
                         <div id="flush-collapse{{ $classwork->id }}" class="accordion-collapse collapse"
                             data-bs-parent="#accordionFlushExample">
-                            <div class="accordion-body"> {{ $classwork->description }}</div>
+                            <div class="accordion-body"> {!! $classwork->description !!}</div>
                             <a href="{{ route('classrooms.classworks.edit', [$classwork->classroom->id , $classwork->id]) }}">Edit ClassWork</a>
                             <a href="{{ route('classrooms.classworks.show', [$classwork->classroom->id , $classwork->id]) }}">Show ClassWork</a>
                         </div>

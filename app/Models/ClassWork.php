@@ -81,8 +81,6 @@ class ClassWork extends Model
 
 
 
-
-
        // many to many
 
 
@@ -104,5 +102,9 @@ class ClassWork extends Model
        {
          return  $this->hasMany((Submission::class));
        }
+
+
+
+
 }
 
