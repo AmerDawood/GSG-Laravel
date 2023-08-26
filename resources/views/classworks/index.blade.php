@@ -67,3 +67,16 @@
 
 
 @endsection
+
+
+@section('scripts')
+
+
+   <script>
+    const classroomId = "{{ $classWork->classroom_id }}";
+   </script>
+
+
+   @vite(['resources/js/app.js'])
+
+@endsection

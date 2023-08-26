@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ClassworkCreated;
 use App\Models\Classroom;
 use App\Models\ClassWork;
 use App\Models\ClassworkUser;
@@ -62,6 +63,8 @@ class ClassWorkController extends Controller
 
 
         ->get();
+
+
 
         // dd($classworks);
 
@@ -200,6 +203,14 @@ class ClassWorkController extends Controller
                 $classwork_user->class_work_id = $classwork->id;
                 $classwork_user->save();
             }
+
+        event(new ClassworkCreated($classwork));
+
+       // to add data to construct
+        // ClassworkCreated::dispatch($classwork);
+
+
+
 
         //  $test =  $classwork->users()->attach($request->input('student'));
             // dd($test);

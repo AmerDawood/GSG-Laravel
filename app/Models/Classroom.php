@@ -228,4 +228,8 @@ class Classroom extends Model
         return $this->users()->wherePivot('role','=','student');
     }
 
+    public function streams(){
+        return $this->hasMany(Stream::class)->latest();
+    }
+
 }
