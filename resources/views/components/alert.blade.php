@@ -8,6 +8,6 @@
 
 @if (session()->has($name))
     <div class="alert alert-{{ $class }}" role="alert">
-        From Component : {{ session($name) }}
+         {{ session($name) }}
     </div>
 @endif

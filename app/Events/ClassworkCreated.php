@@ -31,7 +31,7 @@ class ClassworkCreated implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('classroom'.$this->classWork->classroom_id),
+            new PrivateChannel('classroom.'.$this->classWork->classroom_id),
         ];
     }
 
@@ -45,7 +45,7 @@ class ClassworkCreated implements ShouldBroadcast
        return [
         'id' =>$this->classWork->id,
         'title' => $this->classWork->title,
-        'user' => $this->classWork->user,
+        'user' => $this->classWork->users,
         'classroom' => $this->classWork->classroom(),
        ];
     }

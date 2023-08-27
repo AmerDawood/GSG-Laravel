@@ -6,6 +6,11 @@
     <h1>Classworks</h1>
     <x-alert  name='success'></x-alert>
     <x-alert  name='error'></x-alert>
+{{--
+    @foreach ($classworks as $classwork)
+    {{ $classwork->classroom_id }}
+    @endforeach --}}
+
 
 
      @can('classworks.create',[$classroom])
@@ -26,7 +31,9 @@
     </div>
 
      @endcan
-
+     @php
+     $classroomId = null;
+     @endphp
 
     <div class="row">
         @forelse($classworks as $group)
@@ -34,12 +41,16 @@
 
             <div class="accordion accordion-flush" id="accordionFlushExample">
                 @foreach ($group as $classwork)
+                @php
+                // Add classroom_id to the classroomIds array
+                $classroomId = $classwork->classroom_id;
+                @endphp
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#flush-collapse{{ $classwork->id }}" aria-expanded="false"
                                 aria-controls="flush-collapseOne">
-                             {{ $classwork->id }}/   {{ $classwork->title }} / {{ $classwork->topic->name }}
+                             {{ $classwork->classroom_id }}/   {{ $classwork->title }} / {{ $classwork->topic->name }}
                             </button>
                         </h2>
                         <div id="flush-collapse{{ $classwork->id }}" class="accordion-collapse collapse"
@@ -61,22 +72,27 @@
     </div>
 
 
-
-
     </div>
 
 
 @endsection
 
 
-@section('scripts')
+ @push('scripts')
 
+ <script>
 
-   <script>
-    const classroomId = "{{ $classWork->classroom_id }}";
+    // const classroomId = classroomId;
+    const classroomId = @json($classroomId);
+    console.log(classroomId);
    </script>
 
 
-   @vite(['resources/js/app.js'])
 
-@endsection
+
+   @vite(['resources/js/app.js'])
+ @endpush
+
+
+
+

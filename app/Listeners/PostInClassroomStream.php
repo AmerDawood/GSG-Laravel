@@ -23,19 +23,23 @@ class PostInClassroomStream
      */
     public function handle(ClassworkCreated $event ): void
     {
+
         $classwork = $event->classWork;
 
+        $name = $classwork->users->pluck('name')->first();
+
+
+
         $content = __(':name Posted a new :type',[
-            'name' => $classwork->users->name,
+            'name' => $name,
             'type' => $classwork->type,
         ]);
 
         Stream::create([
-            
             'classroom' => $classwork->classroom_id,
             'user_id' => $classwork->user_id,
             'content' => $content,
-            'link' => route('classrooms.classworks.show',$classwork->classroom_id , $classwork->id)
+            'link' => route('classrooms.classworks.show', ['classroom' => $classwork->classroom_id, 'classwork' => $classwork->id])
         ]);
 
     }

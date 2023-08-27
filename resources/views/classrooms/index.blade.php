@@ -7,7 +7,8 @@
 
 
 @section('content')
-<h1>{{ __('site.Classrooms') }} {{ App::isLocal('ar') ? "Ar" : "En"}}</h1>
+{{-- {{ App::isLocal('ar') ? "Ar" : "En"}} --}}
+<h1>{{ __('site.Classrooms') }} {{ Auth::user()->profile->local }} </h1>
 
 
 

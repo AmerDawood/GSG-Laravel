@@ -43,9 +43,9 @@ class AuthServiceProvider extends ServiceProvider
                 return true;
             }
          });
-         /*
 
-         We replas all this using Policy
+
+        //  We replas all this using Policy
 
         Gate::define('classworks.view', function (User $user, ClassWork $classWork) {
 
@@ -91,7 +91,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
 
-     */
+
         Gate::define('submissions.create',function(User $user , ClassWork $classWork){
             $teacher =  $user->classrooms()
             ->wherePivot('classroom_id', '=', $classWork->classroom_id)

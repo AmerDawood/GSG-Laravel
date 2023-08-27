@@ -1,14 +1,10 @@
 import Echo from 'laravel-echo';
 import './bootstrap';
 
-// import Alpine from 'alpinejs';
 
-// window.Alpine = Alpine;
-
-// Alpine.start();
-
-
-Echo.private('classroom.'+classroomId)
-   .listen('.classwork-created',function(event){
+// Subscribe to the private channel
+window.Echo.private('classroom.' + classroomId)
+   .listen('.classwork-created', function(event) {
       alert(event.title);
    });
+

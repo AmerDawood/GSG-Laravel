@@ -56,7 +56,7 @@ class ClassworkPolicy
         ->withoutGlobalScope(UserClassroomScope::class)
                 ->wherePivot('classroom_id', '=', $classroom->id)
                 ->wherePivot('role', '=', 'teacher')->exists();
-
+                // dd($result);
 
                 return $result;
     }

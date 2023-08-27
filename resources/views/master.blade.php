@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" dir="{{ App::isLocal('ar')? 'rtl' : 'ltr' }}">
+<html lang="en" dir="{{ Auth::user()->profile->local  == 'ar'? 'rtl' : 'ltr' }}">
 
 @include('layouts.head')
   <body>

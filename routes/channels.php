@@ -19,5 +19,6 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 
 
 Broadcast::channel('classroom.{id}',function($user , $id){
-  return $this->classrooms()->where('id','=',$id)->exists();
+//   return $this->classrooms()->where('id','=',$id)->exists();
+return true;
 });

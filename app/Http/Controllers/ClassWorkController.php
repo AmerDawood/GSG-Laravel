@@ -65,7 +65,6 @@ class ClassWorkController extends Controller
         ->get();
 
 
-
         // dd($classworks);
 
         // or
@@ -85,13 +84,15 @@ class ClassWorkController extends Controller
     public function create( Request $request ,Classroom $classroom)
     {
 
+        // dd($request->all());
+
         // if(! Gate::allows('classworks.create',[$classroom])){
         //     abort(403);
         // }
 
-         $this->authorize('create',[ClassWork::class,$classroom]);
+        //  $this->authorize('create',[ClassWork::class,$classroom]);
 
-        // Gate::authorize('classworks.create',[$classroom]);
+        Gate::authorize('classworks.create',[$classroom]);
 
 
         // $type = request('type');
