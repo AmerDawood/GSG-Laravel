@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Events\ClassworkCreated;
 use App\Listeners\PostInClassroomStream;
+use App\Listeners\SendNotificationsToAssignedUsers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -24,13 +25,14 @@ class EventServiceProvider extends ServiceProvider
 
         ClassworkCreated::class => [
             PostInClassroomStream::class,
+            SendNotificationsToAssignedUsers::class,
         ],
 
 
 
-        \App\Events\ClassworkUpdated::class =>[
-            \App\Listeners\SendNotificationsToAssignedUsers::class
-        ],
+        // \App\Events\ClassworkUpdated::class =>[
+        //     \App\Listeners\SendNotificationsToAssignedUsers::class
+        // ],
 
 
 
