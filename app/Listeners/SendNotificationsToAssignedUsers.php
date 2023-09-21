@@ -29,7 +29,7 @@ class SendNotificationsToAssignedUsers
         //     $user->notify(new NewClassworkNotification($event->classWork));
         // }
 
-        
+
         Notification::send($event->classWork->users,new NewClassworkNotification($event->classWork));
     }
 }

@@ -30,7 +30,8 @@ class NewClassworkNotification extends Notification
     public function via(object $notifiable): array
     {
 
-        $via = ['mail','database','broadcast'];
+        // $via = ['mail','database','broadcast'];
+        $via = ['broadcast'];
 
         // if($notifiable->receive_mail_notifications){
         //     $via[] ='mail';
@@ -45,6 +46,7 @@ class NewClassworkNotification extends Notification
 
 
     protected function createMessage(){
+
         $classwork = $this->classWork;
         $content = __(':name Posted a new :type :title',[
             'name' => $this->classWork->name,
@@ -82,6 +84,7 @@ class NewClassworkNotification extends Notification
                     ->action('Go To Classwork',  route('classrooms.classworks.show', ['classroom' => $classwork->classroom_id, 'classwork' => $classwork->id]))
                     ->line('Thank you for using our application!');
     }
+
 
 
 

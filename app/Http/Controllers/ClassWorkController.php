@@ -205,7 +205,9 @@ class ClassWorkController extends Controller
                 $classwork_user->save();
             }
 
-        event(new ClassworkCreated($classwork));
+           event(new ClassworkCreated($classwork));
+
+        // ClassworkCreated::dispatch($classwork);
 
        // to add data to construct
         // ClassworkCreated::dispatch($classwork);

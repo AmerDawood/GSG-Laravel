@@ -29,7 +29,6 @@ class PostInClassroomStream
         $name = $classwork->users->pluck('name')->first();
 
 
-
         $content = __(':name Posted a new :type',[
             'name' => $name,
             'type' => $classwork->type,
