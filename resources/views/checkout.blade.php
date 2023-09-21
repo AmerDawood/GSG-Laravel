@@ -88,11 +88,7 @@
                 },
             });
 
-            // This point will only be reached if there is an immediate error when
-            // confirming the payment. Otherwise, your customer will be redirected to
-            // your `return_url`. For some payment methods like iDEAL, your customer will
-            // be redirected to an intermediate site first to authorize the payment, then
-            // redirected to the `return_url`.
+
             if (error.type === "card_error" || error.type === "validation_error") {
                 showMessage(error.message);
             } else {
@@ -102,7 +98,6 @@
             setLoading(false);
         }
 
-        // Fetches the payment intent status after payment submission
         async function checkStatus() {
             const clientSecret = new URLSearchParams(window.location.search).get(
                 "payment_intent_client_secret"
@@ -146,10 +141,8 @@
             }, 4000);
         }
 
-        // Show a spinner on payment submission
         function setLoading(isLoading) {
             if (isLoading) {
-                // Disable the button and show a spinner
                 document.querySelector("#submit").disabled = true;
                 document.querySelector("#spinner").classList.remove("hidden");
                 document.querySelector("#button-text").classList.add("hidden");
